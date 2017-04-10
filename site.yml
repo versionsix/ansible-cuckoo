@@ -2,10 +2,9 @@
 - name: Install cuckoo
   hosts: vagrant
   become: true
-  # remote_user: user
-  # sudo: yes
 
   roles:
+    - upgrade
     - virtualbox
-    - cuckoo
-    - web
+    # - cuckoo
+    # - web

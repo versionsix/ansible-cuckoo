@@ -1,16 +1,27 @@
 ---
 - name: Configure the Oracle APT key
-  apt_key: url=https://www.virtualbox.org/download/oracle_vbox.asc state=present
+  apt_key: url=https://www.virtualbox.org/download/oracle_vbox_2016.asc state=present
 
-- name: Configure the VirtualBox APT repositories
+- name: Configure the VirtualBox Debian APT repositories
   apt_repository: repo="deb http://download.virtualbox.org/virtualbox/debian {{ ansible_distribution_release }} contrib" state=present
+  when: ansible_distribution == 'Debian'
+
+- name: Configure the VirtualBox Ubuntnu APT repositories
+  apt_repository: repo="deb http://download.virtualbox.org/virtualbox/debian {{ ansible_distribution_release }} contrib" state=present
+  when: ansible_distribution == 'Ubuntu'
 
 - name: Install VirtualBox
+  # apt: pkg=virtualbox state=present update_cache=yes
   apt: pkg=virtualbox-{{ virtualbox_version }} state=present update_cache=yes
- 
-- name: Download Virtualbox extpack
-  get_url: url=http://download.virtualbox.org/virtualbox/4.3.30/Oracle_VM_VirtualBox_Extension_Pack-4.3.30-101610.vbox-extpack dest=/tmp mode=0644
 
-- name: Install Virtualbox extpack  
-  command: vboxmanage extpack install /tmp/Oracle_VM_VirtualBox_Extension_Pack-4.3.30-101610.vbox-extpack creates=/usr/lib/virtualbox/ExtensionPacks/Oracle_VM_VirtualBox_Extension_Pack
-  
+- name: Get virtualbox_version
+  command: bash -l -c "VBoxManage --version | sed -r 's/([0-9])\.([0-9])\.([0-9]{1,2})r([0-9]+).*/\1.\2.\3\/Oracle_VM_VirtualBox_Extension_Pack-\1.\2.\3-\4.vbox-extpack/'"
+  register: vbox_extpack
+
+- debug: var=vbox_extpack
+
+- name: Download Virtualbox extpack
+  get_url: url=http://download.virtualbox.org/virtualbox/{{ vbox_extpack.stdout }} dest=/tmp/Oracle_VM_VirtualBox_Extension_Pack.vbox-extpack mode=0644
+
+# - name: Install Virtualbox extpack
+#   command: vboxmanage extpack install /tmp/Oracle_VM_VirtualBox_Extension_Pack-4.3.30-101610.vbox-extpack creates=/usr/lib/virtualbox/ExtensionPacks/Oracle_VM_VirtualBox_Extension_Pack
