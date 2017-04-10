@@ -1,53 +1,80 @@
 ---
-
 - name: Install requirements from apt
   apt: pkg={{ item }} state=latest
   with_items: apt_requirements
-  sudo: yes
+  become: true
 
 - name: Install requirements from pip
   pip: name={{ item }}
   with_items: pip_requirements
-  sudo: yes
+  become: true
 
-- name: Do the thing
-  script: thing.sh
-  sudo: yes
+- name: give tcpdump root permissions
+  command: setcap cap_net_raw,cap_net_admin=eip /usr/sbin/tcpdump
+  become: true
 
-- name: Install yara v3.3.0
-  script: yara.sh
-  sudo: yes 
+- name: Download yara git {{yara_git_version}}
+  git:
+    repo: 'https://github.com/VirusTotal/yara.git'
+    dest: /tmp/yara
+    version: "{{yara_git_version}}"
+  become: true
 
-- name: Install volatility 
-  script: volatility.sh
-  sudo: yes
+- name: Download volatility git {{volatility_git_version}}
+  git:
+    repo: 'https://github.com/volatilityfoundation/volatility.git'
+    dest: /tmp/volatility
+    version: "{{volatility_git_version}}"
+  become: true
+
+- name: Install volatility
+  command: python setup.py install
+  args:
+    chdir: /tmp/volatility
+  become: true
+
+- name: Compile & install yara
+  become: true
+  shell: >
+    touch foo
+    echo `whoami` >> foo
+    echo `lsb_release -a` >> foo
+  args:
+    chdir: /tmp/yara
 
 - name: Create cuckoo group
   group: name=cuckoo
-  sudo: yes
+  become: true
 
 - name: Create cuckoo user
-  user: name=cuckoo groups=cuckoo,vboxusers,sudo shell=/bin/bash password=$6$fd3Ei22cWadFLS1U$uFxUvp24bSDfITbXP5EeSav4KmB.xHAxypwtIdmvb3A.2anQfsRFHmgNagINMMJmyE29FWvcvq7fgsUByJIoK/
-  sudo: yes
+  user:
+    name: cuckoo
+    groups: cuckoo,vboxusers,sudo
+    shell: /bin/bash
+    password: $6$igzTj8a5LV0$OP9/fAIXmVr2/qPjDJLZ5DYx0F7maMZ7QT99ee2KbkfqAWNC3uVCrGohDpk5cUmfnm8t4qIOuhnlw6FuKP4sL0 # generate pw using mkpasswd --method=sha-512
+  become: true
 
 - name: Sudo group with no passwd
   lineinfile: "dest=/etc/sudoers state=present regexp='^%sudo' line='%sudo ALL=(ALL) NOPASSWD: ALL'"
-  
-- name: Download cuckoo 1.2
-  get_url: url=https://github.com/cuckoobox/cuckoo/archive/1.2.tar.gz dest=/tmp mode=0440
-  sudo: yes
 
-- name: Extract cuckoo
-  unarchive: src=/tmp/cuckoo-1.2.tar.gz dest=/home/cuckoo copy=no
-  sudo: yes
+- name: Download cuckoo {{cuckoo_git_version}}
+  git:
+    repo: 'https://github.com/cuckoosandbox/cuckoo.git'
+    dest: /tmp/cuckoo
+    version: "{{cuckoo_git_version}}"
+  become: true
 
-- name: Copy configuration
-  copy: src={{ item }} dest=/home/cuckoo/cuckoo-1.2/conf/{{ item }} owner=cuckoo group=cuckoo mode=0644
-  with_items: conf_files
-
-- name: Copy cuckoo start script to /usr/local/bin
-  copy: src=cuckoo dest=/usr/local/bin/ owner=root group=root mode=0755
-
-- name: Give proper permissions
-  file: path=/home/cuckoo/cuckoo-1.2 state=directory recurse=yes owner=cuckoo group=cuckoo
-  sudo: yes
+# - name: Extract cuckoo
+#   unarchive: src=/tmp/cuckoo-1.2.tar.gz dest=/home/cuckoo copy=no
+#   become: true
+#
+# - name: Copy configuration
+#   copy: src={{ item }} dest=/home/cuckoo/cuckoo-1.2/conf/{{ item }} owner=cuckoo group=cuckoo mode=0644
+#   with_items: conf_files
+#
+# - name: Copy cuckoo start script to /usr/local/bin
+#   copy: src=cuckoo dest=/usr/local/bin/ owner=root group=root mode=0755
+#
+# - name: Give proper permissions
+#   file: path=/home/cuckoo/cuckoo-1.2 state=directory recurse=yes owner=cuckoo group=cuckoo
+#   become: true
