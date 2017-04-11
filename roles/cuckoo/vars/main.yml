@@ -42,6 +42,7 @@ apt_requirements:
     - python-libvirt
     - supervisor
     - genisoimage
+    - flex
 
 pip_requirements:
     - django
@@ -60,6 +61,7 @@ pip_requirements:
     - nose
     - gunicorn
     - dpkt
+    - yara-python
 
 conf_files:
    - cuckoo.conf

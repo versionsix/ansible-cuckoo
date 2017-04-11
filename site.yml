@@ -1,10 +1,11 @@
+#!/usr/bin/env ansible-playbook
 ---
 - name: Install cuckoo
   hosts: vagrant
   become: true
 
   roles:
-    # - upgrade
-    # - virtualbox
+    #- upgrade
+    #- virtualbox
     - cuckoo
     # - web
