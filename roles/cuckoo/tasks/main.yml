@@ -13,12 +13,28 @@
   command: setcap cap_net_raw,cap_net_admin=eip /usr/sbin/tcpdump
   become: true
 
+- name: tcpdump apparmor disable on Ubuntu
+  shell: >
+    sudo aa-disable /usr/sbin/tcpdump
+  when: ansible_distribution == 'Ubuntu'
+
+
 - name: Download yara git {{yara_git_version}}
   git:
     repo: 'https://github.com/VirusTotal/yara.git'
     dest: /tmp/yara
     version: "{{yara_git_version}}"
   become: true
+
+- name: Compile & install yara
+  become: true
+  shell: >
+    cd /tmp/yara ;
+    ./bootstrap.sh ;
+    ./configure --enable-cuckoo --enable-magic ;
+    make install ;
+  args:
+    chdir: /tmp/yara
 
 - name: Download volatility git {{volatility_git_version}}
   git:
@@ -33,16 +49,6 @@
     chdir: /tmp/volatility
   become: true
 
-- name: Compile & install yara
-  become: true
-  shell: >
-    cd /tmp/yara ;
-    ./bootstrap.sh ;
-    ./configure --enable-cuckoo --enable-magic ;
-    make install ;
-  args:
-    chdir: /tmp/yara
-
 - name: Create cuckoo group
   group: name=cuckoo
   become: true
@@ -52,7 +58,7 @@
     name: cuckoo
     groups: cuckoo,vboxusers,sudo
     shell: /bin/bash
-    password: $6$igzTj8a5LV0$OP9/fAIXmVr2/qPjDJLZ5DYx0F7maMZ7QT99ee2KbkfqAWNC3uVCrGohDpk5cUmfnm8t4qIOuhnlw6FuKP4sL0 # generate pw using mkpasswd --method=sha-512
+    password: $6$igzTj8a5LV0$OP9/fAIXmVr2/qPjDJLZ5DYx0F7maMZ7QT99ee2KbkfqAWNC3uVCrGohDpk5cUmfnm8t4qIOuhnlw6FuKP4sL0 # = cuckoo | generate pw using mkpasswd --method=sha-512
   become: true
 
 - name: Sudo group with no passwd
@@ -65,6 +71,14 @@
 - name: Print FOO
   debug:
     msg: "{{foo_stat}}"
+
+- name: Install setuptools for pip
+  pip: name=setuptools
+  become: cuckoo
+
+- name: Install cuckoo from pip
+  pip: name=cuckoo
+  become: cuckoo
 
 - name: Download cuckoo {{cuckoo_git_version}}
   git:
