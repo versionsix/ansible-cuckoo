@@ -1,12 +1,14 @@
 ---
 - name: Install requirements from apt
   apt: pkg={{ item }} state=latest
-  with_items: apt_requirements
+  with_items: "{{apt_requirements}}"
   become: true
 
 - name: Install requirements from pip
-  pip: name={{ item }}
-  with_items: pip_requirements
+  pip:
+    name: "{{ item }}"
+    state: latest # pip install --upgrade equivalent
+  with_items: "{{pip_requirements}}"
   become: true
 
 - name: give tcpdump root permissions
@@ -14,10 +16,10 @@
   become: true
 
 - name: tcpdump apparmor disable on Ubuntu
-  shell: >
-    sudo aa-disable /usr/sbin/tcpdump
+  command: sudo aa-disable /usr/sbin/tcpdump
+  ignore_errors: yes
   when: ansible_distribution == 'Ubuntu'
-
+  become: true
 
 - name: Download yara git {{yara_git_version}}
   git:
@@ -64,44 +66,54 @@
 - name: Sudo group with no passwd
   lineinfile: "dest=/etc/sudoers state=present regexp='^%sudo' line='%sudo ALL=(ALL) NOPASSWD: ALL'"
 
-- name: Check if cuckoo is installed
-  stat: path=/home/cuckoo/cuckoo/
-  register: foo_stat
-
-- name: Print FOO
-  debug:
-    msg: "{{foo_stat}}"
+# - name: Check if cuckoo is installed
+#   stat: path=/home/cuckoo/cuckoo/
+#   register: foo_stat
+#
+# - name: Print FOO
+#   debug:
+#     msg: "{{foo_stat}}"
 
 - name: Install setuptools for pip
   pip: name=setuptools
-  become: cuckoo
+  become: true
 
 - name: Install cuckoo from pip
-  pip: name=cuckoo
-  become: cuckoo
-
-- name: Download cuckoo {{cuckoo_git_version}}
-  git:
-    repo: 'https://github.com/cuckoosandbox/cuckoo.git'
-    dest: /home/cuckoo/cuckoo/
-    version: "{{cuckoo_git_version}}"
+  pip:
+    name: cuckoo
+    version: "{{cuckoo_version}}"
   become: true
-  when: foo_stat.stat.exists == False
+  when: cuckoo_install_method == "pip"
 
-- name: Set cuckoo permissions
-  file:
-    path: /home/cuckoo/cuckoo/
-    owner: cuckoo
-    group: cuckoo
-    mode: 0644
-    state: directory
-    recurse: yes
-  when: foo_stat.stat.exists == False
+- name: Create vboxnet0
+  shell: >
+    VBoxManage hostonlyif create ;
+    VBoxManage hostonlyif ipconfig vboxnet0 --ip 192.168.56.1 --netmask 255.255.255.0
   become: true
 
-- name: Copy cuckoo configuration
-  copy: src={{ item }} dest=/home/cuckoo/cuckoo/conf/{{ item }} owner=cuckoo group=cuckoo mode=0644
-  with_items: conf_files
+- name: Initialize cuckoo (non-virtualenv) # this Initializes cuckoo to the cuckoo homedir
+  shell: >
+     cuckoo
+  args:
+    chdir: /home/cuckoo/
+    creates: /home/cuckoo/.cuckoo/
+  become_user: cuckoo
+  become_method: sudo
+
+# - name: Set cuckoo permissions
+#   file:
+#     path: /home/cuckoo/cuckoo/
+#     owner: cuckoo
+#     group: cuckoo
+#     mode: 0644
+#     state: directory
+#     recurse: yes
+#   when: foo_stat.stat.exists == False
+#   become: true
+#
+# - name: Copy cuckoo configuration
+#   copy: src={{ item }} dest=/home/cuckoo/cuckoo/conf/{{ item }} owner=cuckoo group=cuckoo mode=0644
+#   with_items: conf_files
 
 # - name: Copy cuckoo start script to /usr/local/bin
 #   copy: src=cuckoo dest=/usr/local/bin/ owner=root group=root mode=0755
