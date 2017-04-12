@@ -91,9 +91,19 @@
     VBoxManage hostonlyif ipconfig vboxnet0 --ip 192.168.56.1 --netmask 255.255.255.0
   become: true
 
-- name: Initialize cuckoo (non-virtualenv) # this Initializes cuckoo to the cuckoo homedir
+  # this Initializes cuckoo to the cuckoo homedir
+- name: Initialize cuckoo (non-virtualenv)
   shell: >
      cuckoo
+  args:
+    chdir: /home/cuckoo/
+    creates: /home/cuckoo/.cuckoo/
+  become_user: cuckoo
+  become_method: sudo
+
+- name: Download cuckoo community signatures
+  shell: >
+     cuckoo community
   args:
     chdir: /home/cuckoo/
     creates: /home/cuckoo/.cuckoo/
