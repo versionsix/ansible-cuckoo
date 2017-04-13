@@ -1,0 +1,35 @@
+[cuckoo]
+version_check = {{ cuckoo.cuckoo.version_check }}
+delete_original = {{ cuckoo.cuckoo.delete_original }}
+delete_bin_copy = {{ cuckoo.cuckoo.delete_bin_copy }}
+machinery = {{ cuckoo.cuckoo.machinery }}
+memory_dump = {{ cuckoo.cuckoo.memory_dump }}
+terminate_processes = {{ cuckoo.cuckoo.terminate_processes }}
+reschedule = {{ cuckoo.cuckoo.reschedule }}
+process_results = {{ cuckoo.cuckoo.process_results }}
+max_analysis_count = {{ cuckoo.cuckoo.max_analysis_count }}
+max_machines_count = {{ cuckoo.cuckoo.max_machines_count }}
+max_vmstartup_count = {{ cuckoo.cuckoo.max_vmstartup_count }}
+freespace = {{ cuckoo.cuckoo.freespace }}
+tmppath = {{ cuckoo.cuckoo.tmppath }}
+rooter = {{ cuckoo.cuckoo.rooter }}
+[feedback]
+enabled = {{ cuckoo.feedback.enabled }}
+name = {{ cuckoo.feedback.name }}
+company = {{ cuckoo.feedback.company }}
+email = {{ cuckoo.feedback.email }}
+[resultserver]
+ip = {{ cuckoo.resultserver.ip }}
+port = {{ cuckoo.resultserver.port }}
+force_port = {{ cuckoo.resultserver.force_port }}
+upload_max_size = {{ cuckoo.resultserver.upload_max_size }}
+[processing]
+analysis_size_limit = {{ cuckoo.processing.analysis_size_limit }}
+resolve_dns = {{ cuckoo.processing.resolve_dns }}
+sort_pcap = {{ cuckoo.processing.sort_pcap }}
+connection = {{ cuckoo.database.connection }}
+timeout = {{ cuckoo.database.timeout }}
+[timeouts]
+default = {{ cuckoo.timeouts.default }}
+critical = {{ cuckoo.timeouts.critical }}
+vm_state = {{ cuckoo.timeouts.vm_state }}

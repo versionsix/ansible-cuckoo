@@ -1,0 +1,2 @@
+- name: Copy cuckoo.conf config file
+  template: src=templates/cuckoo.conf.j2 dest={{ conf_dir }}cuckoo.conf

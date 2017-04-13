@@ -1,0 +1,467 @@
+---
+# Dir to put generated config files
+conf_dir: /home/cuckoo/
+
+# Basic cuckoo configuration
+cuckoo:
+  cuckoo:
+    # Enable or disable startup version check. When enabled, Cuckoo will connect
+    # to a remote location to verify whether the running version is the latest
+    # one available.
+    version_check: yes
+
+    # If turned on, Cuckoo will delete the original file after its analysis
+    # has been completed.
+    delete_original: no
+
+    # If turned on, Cuckoo will delete the copy of the original file in the
+    # local binaries repository after the analysis has finished. (On *nix this
+    # will also invalidate the file called "binary" in each analysis directory,
+    # as this is a symlink.)
+    delete_bin_copy:  no
+
+    # Specify the name of the machinery module to use, this module will
+    # define the interaction between Cuckoo and your virtualization software
+    # of choice.
+    machinery: virtualbox
+
+    # Enable creation of memory dump of the analysis machine before shutting
+    # down. Even if turned off, this functionality can also be enabled at
+    # submission. Currently available for: VirtualBox and libvirt modules (KVM).
+    memory_dump: no
+
+    # When the timeout of an analysis is hit, the VM is just killed by default.
+    # For some long-running setups it might be interesting to terminate the
+    # monitored processes before killing the VM so that connections are closed.
+    terminate_processes: no
+
+    # Enable automatically re-schedule of "broken" tasks each startup.
+    # Each task found in status "processing" is re-queued for analysis.
+    reschedule: no
+
+    # Enable processing of results within the main cuckoo process.
+    # This is the default behavior but can be switched off for setups that
+    # require high stability and process the results in a separate task.
+    process_results: yes
+
+    # Limit the amount of analysis jobs a Cuckoo process goes through.
+    # This can be used together with a watchdog to mitigate risk of memory leaks.
+    max_analysis_count: 0
+
+    # Limit the number of concurrently executing analysis machines.
+    # This may be useful on systems with limited resources.
+    # Set to 0 to disable any limits.
+    max_machines_count: 0
+
+    # Limit the amount of VMs that are allowed to start in parallel. Generally
+    # speaking starting the VMs is one of the more CPU intensive parts of the
+    # actual analysis. This option tries to avoid maxing out the CPU completely.
+    max_vmstartup_count: 10
+
+    # Minimum amount of free space (in MB) available before starting a new task.
+    # This tries to avoid failing an analysis because the reports can't be written
+    # due out-of-diskspace errors. Setting this value to 0 disables the check.
+    # (Note: this feature is currently not supported under Windows.)
+    freespace: 1024
+
+    # Temporary directory containing the files uploaded through Cuckoo interfaces
+    # (api.py and Django web interface). Defaults to the default temporary
+    # directory of the operating system (e.g., /tmp on Linux). Overwrite the value
+    # if you'd like to specify an alternative path.
+    tmppath:
+
+    # Path to the unix socket for running root commands.
+    rooter: /tmp/cuckoo-rooter
+
+  feedback:
+    # Cuckoo is capable of sending "developer feedback" to the developers so that
+    # they can more easily improve the project. This functionality also allows the
+    # user to quickly request new features, report bugs, and get in touch with
+    # support in general, etc.
+    enabled: no
+    name:
+    company:
+    email:
+
+  resultserver:
+    # The Result Server is used to receive in real time the behavioral logs
+    # produced by the analyzer.
+    # Specify the IP address of the host. The analysis machines should be able
+    # to contact the host through such address, so make sure it's valid.
+    # NOTE: if you set resultserver IP to 0.0.0.0 you have to set the option
+    # `resultserver_ip` for all your virtual machines in machinery configuration.
+    ip: 0.0.0.0
+
+    # Specify a port number to bind the result server on.
+    port: 2042
+
+    # Force the port chosen above, don't try another one (we can select another
+    # port dynamically if we can not bind this one, but that is not an option
+    # in some setups)
+    force_port: no
+
+    # Maximum size of uploaded files from VM (screenshots, dropped files, log).
+    # The value is expressed in bytes, by default 128 MB.
+    upload_max_size: 134217728
+
+  processing:
+    # Set the maximum size of analyses generated files to process. This is used
+    # to avoid the processing of big files which may take a lot of processing
+    # time. The value is expressed in bytes, by default 128 MB.
+    analysis_size_limit: 134217728
+
+    # Enable or disable DNS lookups.
+    resolve_dns: yes
+
+    # Enable PCAP sorting, needed for the connection content view in the web interface.
+    sort_pcap: yes
+
+  database:
+    # Specify the database connection string.
+    # NOTE: If you are using a custom database (different from sqlite), you have to
+    # use utf-8 encoding when issuing the SQL database creation statement.
+    # Examples, see documentation for more:
+    # sqlite:///foo.db
+    # postgresql://foo:bar@localhost:5432/mydatabase
+    # mysql://foo:bar@localhost/mydatabase
+    # If empty, defaults to a SQLite3 database at $CWD/cuckoo.db.
+    connection:
+
+    # Database connection timeout in seconds.
+    # If empty, default is set to 60 seconds.
+    timeout: 60
+
+  timeouts:
+    # Set the default analysis timeout expressed in seconds. This value will be
+    # used to define after how many seconds the analysis will terminate unless
+    # otherwise specified at submission.
+    default: 120
+
+    # Set the critical timeout expressed in (relative!) seconds. It will be added
+    # to the default timeout above and after this timeout is hit
+    # Cuckoo will consider the analysis failed and it will shutdown the machine
+    # no matter what. When this happens the analysis results will most likely
+    # be lost.
+    critical: 60
+
+    # Maximum time to wait for virtual machine status change. For example when
+    # shutting down a vm. Default is 60 seconds.
+    vm_state: 60
+
+# Volatility configuration
+memory:
+  # Basic settings
+  basic:
+    # Profile to avoid wasting time identifying it
+    guest_profile: WinXPSP2x86
+    # Delete memory dump after volatility processing.
+    delete_memdump: no
+
+  # List of available modules
+  # enabled: enable this module
+  # filter: use filters to remove benign system data from the logs
+  # Filters are defined in the mask section at below
+
+  # Scans for hidden/injected code and dlls
+  # http://code.google.com/p/volatility/wiki/CommandReferenceMal23#malfind
+  malfind:
+    enabled: yes
+    filter: yes
+
+  # Lists hooked api in user mode and kernel space
+  # Expect it to be very slow when enabled
+  # http://code.google.com/p/volatility/wiki/CommandReferenceMal23#apihooks
+  apihooks:
+    enabled: no
+    filter: yes
+
+
+  # Lists official processes. Does not detect hidden processes
+  # http://code.google.com/p/volatility/wiki/CommandReference23#pslist
+  pslist:
+    enabled: yes
+    filter: no
+
+  # Lists hidden processes. Uses several tricks to identify them
+  # http://code.google.com/p/volatility/wiki/CommandReferenceMal23#psxview
+  psxview:
+    enabled: yes
+    filter: no
+
+  # Show callbacks
+  # http://code.google.com/p/volatility/wiki/CommandReferenceMal23#callbacks
+  callbacks:
+    enabled: yes
+    filter: no
+
+  # Show idt
+  # http://code.google.com/p/volatility/wiki/CommandReferenceMal23#idt
+  idt:
+    enabled: yes
+    filter: no
+
+  # Show timers
+  # http://code.google.com/p/volatility/wiki/CommandReferenceMal23#timers
+  timers:
+    enabled: yes
+    filter: no
+
+  # Show messagehooks
+  # Expect it to be very slow when enabled
+  # http://code.google.com/p/volatility/wiki/CommandReferenceGui23#messagehooks
+  messagehooks:
+    enabled: no
+    filter: no
+
+  # Show sids
+  # http://code.google.com/p/volatility/wiki/CommandReference23#getsids
+  getsids:
+    enabled: yes
+    filter: no
+
+  # Show privileges
+  # http://code.google.com/p/volatility/wiki/CommandReference23#privs
+  privs:
+    enabled: yes
+    filter: no
+
+  # Display processes' loaded DLLs- Does not display hidden DLLs
+  # http://code.google.com/p/volatility/wiki/CommandReference23#dlllist
+  dlllist:
+    enabled: yes
+    filter: yes
+
+  # List open handles of processes
+  # http://code.google.com/p/volatility/wiki/CommandReference23#handles
+  handles:
+    enabled: yes
+    filter: yes
+
+  # Displays processes' loaded DLLs - Even hidden one (unlinked from PEB linked list)
+  # http://code.google.com/p/volatility/wiki/CommandReferenceMal23#ldrmodules
+  ldrmodules:
+    enabled: yes
+    filter: yes
+
+  # Scan for Mutexes (whole system)
+  # http://code.google.com/p/volatility/wiki/CommandReference23#mutantscan
+  mutantscan:
+    enabled: yes
+    filter: yes
+
+  # List devices and drivers
+  # http://code.google.com/p/volatility/wiki/CommandReferenceMal23#devicetree
+  devicetree:
+    enabled: yes
+    filter: yes
+
+  # Scan for services
+  # http://code.google.com/p/volatility/wiki/CommandReferenceMal23#svcscan
+  svcscan:
+    enabled: yes
+    filter: yes
+
+  # Scan for kernel drivers (includes hidden, unloaded)
+  # http://code.google.com/p/volatility/wiki/CommandReference23#modscan
+  modscan:
+    enabled: yes
+    filter: yes
+
+  yarascan:
+    enabled: yes
+    filter: yes
+
+  ssdt:
+    enabled: yes
+    filter: yes
+
+  gdt:
+    enabled: yes
+    filter: yes
+
+  # This will only run on XP profiles.
+  sockscan:
+    enabled: yes
+    filter: no
+
+  # This will only run on Vista/7 profiles.
+  netscan:
+    enabled: yes
+    filter: no
+
+  # Masks. Data that should not be logged
+  # Just get this information from your plain VM Snapshot (without running malware)
+  # This will filter out unwanted information in the logs
+  mask:
+    enabled: no
+    pid_generic:
+
+# Processing modules configuration
+processing:
+  # Enable or disable the available processing modules [yes/no].
+  # If you add a custom processing module to your Cuckoo setup, you have to add
+  # a dedicated entry in this file, or it won't be executed.
+  # You can also add additional options under the section of your module and
+  # they will be available in your Python class.
+  analysisinfo:
+    enabled: yes
+
+  apkinfo:
+    enabled: no
+    # Decompiling dex files with androguard in a heavy operation. For large dex
+    # files it can really take quite a while - it is recommended to limit to a
+    # certain filesize.
+    decompilation_threshold: 5000000
+
+  baseline:
+    enabled: no
+
+  behavior:
+    enabled: yes
+
+  buffer:
+    enabled: yes
+
+  debug:
+    enabled: yes
+
+  droidmon:
+    enabled: no
+
+  dropped:
+    enabled: yes
+
+  dumptls:
+    enabled: yes
+
+  googleplay:
+    enabled: no
+    android_id:
+    google_login:
+    google_password:
+
+  memory:
+  # Create a memory dump of the entire Virtual Machine. This memory dump will
+  # then be analyzed using Volatility to locate interesting events that can be
+  # extracted from memory.
+    enabled: no
+
+  misp:
+    enabled: no
+    url:
+    apikey:
+    # Maximum amount of IOCs to look up (hard limit).
+    maxioc: 100
+
+  network:
+    enabled: yes
+    # Allow domain whitelisting
+    whitelist_dns: no
+
+    # Allow DNS responses from your configured DNS server for whitelisting to
+    # deactivate when responses come from some other DNS
+    # Can be also multiple like : 8.8.8.8,8.8.4.4
+    allowed_dns:
+
+  procmemory:
+    # Enables the creation of process memory dumps for each analyzed process right
+    # before they terminate themselves or right before the analysis finishes.
+    enabled: yes
+    # It is possible to load these process memory dumps in IDA Pro through the
+    # generation of IDA Python-based script files. Although currently symbols and
+    # such are not properly recovered, it is still nice to get a quick look at
+    # specific memory addresses of a process.
+    idapro: no
+    # Extract executable images from this process memory dump. This allows us to
+    # relatively easily extract injected executables.
+    extract_img: yes
+    # Also extract DLL files from the process memory dump.
+    extract_dll: no
+    # Delete process memory dumps after analysis to save disk space.
+    dump_delete: no
+
+  procmon:
+    # Enable procmon processing. This only takes place when the "procmon=1" option
+    # is set for an analysis.
+    enabled: yes
+
+  screenshots:
+    enabled: yes
+    # Set to the actual tesseract path (i.e., /usr/bin/tesseract or similar)
+    # rather than "no" to enable OCR analysis of screenshots.
+    # Note: doing OCR on the screenshots is a rather slow process.
+    tesseract: no
+
+  snort:
+    enabled: no
+    # Following are various configurable settings. When in use of a recent 2.9.x.y
+    # version of Snort there is no need to change any of the following settings as
+    # they represent the defaults.
+    #
+    snort: /usr/local/bin/snort
+    conf: /etc/snort/snort.conf
+
+  static:
+    enabled: yes
+    # On bigger PDF files PeePDF may take a substantial amount of time to perform
+    # static analysis of PDF files, with times of over an hour per file estimated
+    # in production. This option will by default limit the maximum processing time
+    # to one minute, but this may be adjusted accordingly. Note that if the timeout
+    # is hit, no static analysis results through PeePDF will be available.
+    pdf_timeout: 60
+
+  strings:
+    enabled: yes
+
+  suricata:
+    enabled: no
+
+    # Following are various configurable settings. When in use of a recent version
+    # of Suricata there is no need to change any of the following settings as they
+    # represent the defaults.
+    suricata: /usr/bin/suricata
+    conf: /etc/suricata/suricata.yaml
+    eve_log:  eve.json
+    files_log: files-json.log
+    files_dir: files
+
+    # By specifying the following line our processing module can use the socket
+    # mode in Suricata. This is quite the performance improvement as instead of
+    # having to load all the Suricata rules for each time the processing module is
+    # ran (i.e., for every task), the rules are only loaded once and then we talk
+    # to its API. This does require running Suricata as follows or similar;
+    # "suricata --unix-socket -D".
+    # (Please find more information in utils/suricata.sh for now).
+    # socket = /var/run/suricata/cuckoo.socket
+    socket:
+
+  targetinfo:
+    enabled: yes
+
+  virustotal:
+    enabled: no
+    # How much time we can wait to establish VirusTotal connection and get the
+    # report.
+    timeout: 60
+    # Enable this option if you want to submit files to VirusTotal not yet available
+    # in their database.
+    # NOTE: if you are dealing with sensitive stuff, enabling this option you could
+    # leak some files to VirusTotal.
+    scan: no
+    # Add your VirusTotal API key here. The default API key, kindly provided
+    # by the VirusTotal team, should enable you with a sufficient throughput
+    # and while being shared with all our users, it shouldn't affect your use.
+    key: a0283a2c3d55728300d064874239b5346fb991317e8449fe43c902879d758088
+
+  irma:
+    enabled: no
+    # IRMA @ github : https://github.com/quarkslab/irma
+    # How much time we can wait to establish IRMA connection and get the report.
+    timeout: 60
+    # Enable this option if you want to submit files to IRMA not yet available.
+    scan: no
+    # Force scan of submitted files
+    force: no
+    # URL to your IRMA installation
+    # For example : https://your.irma.host
+    url:

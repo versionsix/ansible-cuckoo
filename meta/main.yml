@@ -1,15 +1,14 @@
 ---
 galaxy_info:
-  author: "Christos Sidiropoulos"
-  description: Installs Cuckoo Sandbox.
-  company: ENISA
+  author: "Christos Sidiropoulos | Frank Meeusen"
+  description: Installs Cuckoo Sandbox v2.0.x
+  company: ENISA | FCCU Belgium
   license: license (BSD)
-  min_ansible_version: 1.5
+  min_ansible_version: 2.2
   platforms:
   - name: Ubuntu
     versions:
-    - precise
-    - trusty
-  categories: 
+    - xenial
+  categories:
   - system
 dependencies: []

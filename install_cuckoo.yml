@@ -8,5 +8,6 @@
     - upgrade
     - virtualbox
     - cuckoo
+    - cuckoo_conf
     - inetsim
     # - web
