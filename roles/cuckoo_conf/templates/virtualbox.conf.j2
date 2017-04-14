@@ -15,33 +15,35 @@ interface = {{ virtualbox.virtualbox.interface }}
 # Specify a comma-separated list of available machines to be used. For each
 # specified ID you have to define a dedicated section containing the details
 # on the respective machine. (E.g. cuckoo1,cuckoo2,cuckoo3)
-machines = {{ virtualbox.virtualbox.machines }}
+machines = {% for machine in machines %} "{{ machine }}" {% if not loop.last %},{% endif %} {% endfor %}
 
-{% for machine in config("virtualbox:virtualbox:machines") %}
+{% for machine in machines %}
 [{{ machine }}]
+{% if machines[machine].guest %}
 # Specify the label name of the current machine as specified in your
 # VirtualBox configuration.
-label = {{ virtualbox[machine].label }}
+label = {{ machines[machine].label }}
+
 
 # Specify the operating system platform used by current machine
 # [windows/darwin/linux].
-platform = {{ virtualbox[machine].platform }}
+platform = {{ machines[machine].platform }}
 
 # Specify the IP address of the current virtual machine. Make sure that the
 # IP address is valid and that the host machine is able to reach it. If not,
 # the analysis will fail.
-ip = {{ virtualbox[machine].ip }}
+ip = {{ machines[machine].ip }}
 
 # (Optional) Specify the snapshot name to use. If you do not specify a snapshot
 # name, the VirtualBox MachineManager will use the current snapshot.
 # Example (Snapshot1 is the snapshot name):
-snapshot = {{ virtualbox[machine].snapshot }}
+snapshot = {{ machines[machine].snapshot }}
 
 # (Optional) Specify the name of the network interface that should be used
 # when dumping network traffic from this machine with tcpdump. If specified,
 # overrides the default interface specified in auxiliary.conf
 # Example (vboxnet0 is the interface name):
-interface = {{ virtualbox[machine].interface }}
+interface = {{ machines[machine].interface }}
 
 # (Optional) Specify the IP of the Result Server, as your virtual machine sees it.
 # The Result Server will always bind to the address and port specified in cuckoo.conf,
@@ -50,7 +52,7 @@ interface = {{ virtualbox[machine].interface }}
 # address here, the machine will use the default value from cuckoo.conf.
 # NOTE: if you set this option you have to set result server IP to 0.0.0.0 in cuckoo.conf.
 # Example:
-resultserver_ip = {{ virtualbox[machine].resultserver_ip }}
+resultserver_ip = {{ machines[machine].resultserver_ip }}
 
 # (Optional) Specify the port for the Result Server, as your virtual machine sees it.
 # The Result Server will always bind to the address and port specified in cuckoo.conf,
@@ -58,14 +60,15 @@ resultserver_ip = {{ virtualbox[machine].resultserver_ip }}
 # the port for the Result Server as your machine sees it. If you don't specify a port
 # here, the machine will use the default value from cuckoo.conf.
 # Example:
-resultserver_port = {{ virtualbox[machine].resultserver_port }}
+resultserver_port = {{ machines[machine].resultserver_port }}
 
 # (Optional) Set your own tags. These are comma separated and help to identify
 # specific VMs. You can run samples on VMs with tag you require.
-tags = {{ virtualbox[machine].tags }}
+tags = {{ machines[machine].tags }}
 
 # Mostly unused for now. Please don't fill it out.
-options = {{ virtualbox[machine].options }}
+options = {{ machines[machine].options }}
+{% endif %}
 {% endfor %}
 
 [honeyd]

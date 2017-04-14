@@ -11,6 +11,14 @@
 - name: Copy reporting.conf config file
   template: src=templates/reporting.conf.j2 dest={{ conf_dir }}reporting.conf
 
+# - name: Load machines configs
+#   include_vars:
+#     dir: 'machines'
+#     name: machines
+
+- debug:
+    msg: "{{ machines  | to_nice_json }} "
+
 - name: Copy virtualbox.conf config file
   template: src=templates/virtualbox.conf.j2 dest={{ conf_dir }}virtualbox.conf
 
