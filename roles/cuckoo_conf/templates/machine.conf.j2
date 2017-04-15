@@ -1,0 +1,13 @@
+[vmcloak]
+vm-dir = {{vm_dir}}
+data-dir = {{data_dir}}
+cuckoo = /home/cuckoo/.cuckoo
+serial-key = {{machines[item].VMCloack.serial_key}}
+host-ip = {{machines[item].resultserver_ip}}
+hostonly-ip = {{machines[item].ip}}
+hostonly-gateway = {{machines[item].resultserver_ip}}
+hostonly-adapter = {{machines[item].VMCloack.hostonly_adapter}}
+vrde = {{machines[item].VMCloack.vrde}}
+ramsize = {{machines[item].VMCloack.ramsize}}
+iso-mount = {{iso_store}}{{machines[item].VMCloack.iso}}
+dependencies = {{machines[item].VMCloack.dependencies}}

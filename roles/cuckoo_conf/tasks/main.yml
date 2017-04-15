@@ -1,26 +1,19 @@
 ---
 - name: Copy cuckoo.conf config file
-  template: src=templates/cuckoo.conf.j2 dest={{ conf_dir }}cuckoo.conf
+  template: src=templates/cuckoo.conf.j2 dest={{ cuckoo_dir }}/conf/cuckoo.conf
 
 - name: Copy memory.conf config file
-  template: src=templates/memory.conf.j2 dest={{ conf_dir }}memory.conf
+  template: src=templates/memory.conf.j2 dest={{ cuckoo_dir }}/conf/memory.conf
 
 - name: Copy processing.conf config file
-  template: src=templates/processing.conf.j2 dest={{ conf_dir }}processing.conf
+  template: src=templates/processing.conf.j2 dest={{ cuckoo_dir }}/conf/processing.conf
 
 - name: Copy reporting.conf config file
-  template: src=templates/reporting.conf.j2 dest={{ conf_dir }}reporting.conf
-
-# - name: Load machines configs
-#   include_vars:
-#     dir: 'machines'
-#     name: machines
-
-- debug:
-    msg: "{{ machines  | to_nice_json }} "
+  template: src=templates/reporting.conf.j2 dest={{ cuckoo_dir }}/conf/reporting.conf
 
 - name: Copy virtualbox.conf config file
-  template: src=templates/virtualbox.conf.j2 dest={{ conf_dir }}virtualbox.conf
+  template: src=templates/virtualbox.conf.j2 dest={{ cuckoo_dir }}/conf/virtualbox.conf
 
-- name: Copy winxp3.conf config file
-  template: src=templates/winxp3.conf.j2 dest={{ conf_dir }}winxp3.conf
+- name: Generate VMCloack configs
+  template: src=templates/machine.conf.j2 dest={{ cuckoo_dir }}/conf/{{ machines[item].label }}.conf
+  with_items: "{{machines}}"

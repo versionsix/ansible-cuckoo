@@ -1,6 +1,6 @@
 ---
 # Dir to put generated config files
-conf_dir: /home/cuckoo/
+cuckoo_dir: /home/cuckoo/.cuckoo
 
 # Basic cuckoo configuration
 cuckoo:

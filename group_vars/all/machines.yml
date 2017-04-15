@@ -50,6 +50,16 @@ machines:
     # Mostly unused for now. Please don't fill it out.
     options:
 
+    # VMCloack specifications
+    VMCloack:
+      serial_key: M6TF9-8XQ2M-YQK9F-7TBB2-XGG88 # Universal winXP key http://appnee.com/windows-xp-all-editions-universal-product-keys-collection/
+      hostonly_adapter: vboxnet0
+      vrde: true
+      ramsize: 512
+      iso: winxp.iso
+      dependencies: wic pil python27 winstaller31
+
+
   WinXP3_32bit_2:
     # specify if the machine is a guest vm or not
     guest: yes
@@ -99,3 +109,12 @@ machines:
 
     # Mostly unused for now. Please don't fill it out.
     options:
+
+    # VMCloack specifications
+    VMCloack:
+      serial_key: M6TF9-8XQ2M-YQK9F-7TBB2-XGG88 # Universal winXP key http://appnee.com/windows-xp-all-editions-universal-product-keys-collection/
+      hostonly_adapter: vboxnet0
+      vrde: true
+      ramsize: 512
+      iso: winxp.iso
+      dependencies: wic pil python27 winstaller31
