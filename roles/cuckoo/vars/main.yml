@@ -1,6 +1,6 @@
 ---
 cuckoo_install_method: "pip" # install cuckoo using git or pip
-cuckoo_version: "2.0.0"
+cuckoo_version: "2.0.1"
 yara_git_version: "v3.5.0"
 volatility_git_version: "2.6"
 

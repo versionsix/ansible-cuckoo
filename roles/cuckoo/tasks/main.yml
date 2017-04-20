@@ -26,6 +26,7 @@
     repo: 'https://github.com/VirusTotal/yara.git'
     dest: /tmp/yara
     version: "{{yara_git_version}}"
+    update: no
   become: true
 
 - name: Compile & install yara
@@ -43,6 +44,7 @@
     repo: 'https://github.com/volatilityfoundation/volatility.git'
     dest: /tmp/volatility
     version: "{{volatility_git_version}}"
+    update: no
   become: true
 
 - name: Install volatility

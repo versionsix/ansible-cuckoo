@@ -125,7 +125,7 @@ cuckoo:
     # postgresql://foo:bar@localhost:5432/mydatabase
     # mysql://foo:bar@localhost/mydatabase
     # If empty, defaults to a SQLite3 database at $CWD/cuckoo.db.
-    connection:
+    connection: $CWD/cuckoo.db
 
     # Database connection timeout in seconds.
     # If empty, default is set to 60 seconds.
