@@ -1,7 +1,4 @@
 ---
-# Dir to put generated config files
-cuckoo_dir: /home/cuckoo/.cuckoo
-
 # Basic cuckoo configuration
 cuckoo:
   cuckoo:
@@ -125,7 +122,7 @@ cuckoo:
     # postgresql://foo:bar@localhost:5432/mydatabase
     # mysql://foo:bar@localhost/mydatabase
     # If empty, defaults to a SQLite3 database at $CWD/cuckoo.db.
-    connection: $CWD/cuckoo.db
+    connection:
 
     # Database connection timeout in seconds.
     # If empty, default is set to 60 seconds.

@@ -27,6 +27,7 @@ upload_max_size = {{ cuckoo.resultserver.upload_max_size }}
 analysis_size_limit = {{ cuckoo.processing.analysis_size_limit }}
 resolve_dns = {{ cuckoo.processing.resolve_dns }}
 sort_pcap = {{ cuckoo.processing.sort_pcap }}
+[database]
 connection = {{ cuckoo.database.connection }}
 timeout = {{ cuckoo.database.timeout }}
 [timeouts]

@@ -68,14 +68,6 @@
 - name: Sudo group with no passwd
   lineinfile: "dest=/etc/sudoers state=present regexp='^%sudo' line='%sudo ALL=(ALL) NOPASSWD: ALL'"
 
-# - name: Check if cuckoo is installed
-#   stat: path=/home/cuckoo/cuckoo/
-#   register: foo_stat
-#
-# - name: Print FOO
-#   debug:
-#     msg: "{{foo_stat}}"
-
 - name: Install setuptools for pip
   pip: name=setuptools
   become: true
@@ -103,7 +95,7 @@
   become_user: cuckoo
   become_method: sudo
 
-- name: Download cuckoo community signatures
+- name: Download cuckoo community signatures (non-virtualenv)
   shell: >
      cuckoo community
   args:
@@ -111,22 +103,3 @@
     creates: /home/cuckoo/.cuckoo/
   become_user: cuckoo
   become_method: sudo
-
-# - name: Set cuckoo permissions
-#   file:
-#     path: /home/cuckoo/cuckoo/
-#     owner: cuckoo
-#     group: cuckoo
-#     mode: 0644
-#     state: directory
-#     recurse: yes
-#   when: foo_stat.stat.exists == False
-#   become: true
-#
-# - name: Copy cuckoo configuration
-#   copy: src={{ item }} dest=/home/cuckoo/cuckoo/conf/{{ item }} owner=cuckoo group=cuckoo mode=0644
-#   with_items: conf_files
-
-# - name: Copy cuckoo start script to /usr/local/bin
-#   copy: src=cuckoo dest=/usr/local/bin/ owner=root group=root mode=0755
-#

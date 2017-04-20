@@ -1,4 +1,7 @@
 ---
+# Dirs to store vm information
 vm_dir: /home/cuckoo/vms/
 data_dir: /home/cuckoo/vm-data/
 iso_store: /tmp/iso/
+# Dir to put generated (non-virtualenv) config files
+cuckoo_dir: /home/cuckoo/.cuckoo

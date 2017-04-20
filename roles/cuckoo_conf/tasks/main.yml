@@ -1,19 +1,37 @@
 ---
 - name: Copy cuckoo.conf config file
-  template: src=templates/cuckoo.conf.j2 dest={{ cuckoo_dir }}/conf/cuckoo.conf
+  template:
+    src: templates/cuckoo.conf.j2
+    dest: "{{ cuckoo_dir }}/conf/cuckoo.conf"
+    backup: yes
 
 - name: Copy memory.conf config file
-  template: src=templates/memory.conf.j2 dest={{ cuckoo_dir }}/conf/memory.conf
+  template:
+    src: templates/memory.conf.j2
+    dest: "{{ cuckoo_dir }}/conf/memory.conf"
+    backup: yes
 
 - name: Copy processing.conf config file
-  template: src=templates/processing.conf.j2 dest={{ cuckoo_dir }}/conf/processing.conf
+  template:
+    src: templates/processing.conf.j2
+    dest: "{{ cuckoo_dir }}/conf/processing.conf"
+    backup: yes
 
 - name: Copy reporting.conf config file
-  template: src=templates/reporting.conf.j2 dest={{ cuckoo_dir }}/conf/reporting.conf
+  template:
+    src: templates/reporting.conf.j2
+    dest: "{{ cuckoo_dir }}/conf/reporting.conf"
+    backup: yes
 
 - name: Copy virtualbox.conf config file
-  template: src=templates/virtualbox.conf.j2 dest={{ cuckoo_dir }}/conf/virtualbox.conf
+  template:
+    src: templates/virtualbox.conf.j2
+    dest: "{{ cuckoo_dir }}/conf/virtualbox.conf"
+    backup: yes
 
-- name: Generate VMCloack configs
-  template: src=templates/machine.conf.j2 dest={{ cuckoo_dir }}/conf/{{ machines[item].label }}.conf
+- name: Generate VMCloack configs (Not necessary for most recent version, but...)
+  template:
+    src: templates/machine.conf.j2
+    dest: "{{ cuckoo_dir }}/conf/{{ machines[item].label }}.conf"
+    backup: yes
   with_items: "{{machines}}"

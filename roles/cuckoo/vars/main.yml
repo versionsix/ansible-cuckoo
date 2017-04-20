@@ -45,6 +45,7 @@ apt_requirements:
     - supervisor
     - genisoimage
     - flex
+    - bison
     - python-virtualenv
     - python-setuptools
     - swig
