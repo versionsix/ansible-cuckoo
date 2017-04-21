@@ -31,7 +31,7 @@
     version: "v{{yara_git_version}}"
     update: no
   become: true
-  when: '"yara {{yara_git_version}}" not in yara.stdout'
+  when: 'yara_git_version|string not in yara.stdout'
 
 - name: Compile & install yara
   become: true
@@ -42,7 +42,7 @@
     make install ;
   args:
     chdir: /tmp/yara
-  when: '"yara {{yara_git_version}}" not in yara.stdout'
+  when: 'yara_git_version|string not in yara.stdout'
 
 - name: Download volatility git {{volatility_git_version}}
   git:

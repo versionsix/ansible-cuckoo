@@ -3,6 +3,7 @@
 # killvbox & removevms
 
 # make sure first to setup vboxnet0 to prevent errors. It's not persistent between reboots.
+# TODO: Iptables
 - name: Setup vboxnet0
   command: vmcloak-vboxnet0
   become: true
@@ -30,15 +31,19 @@
   args:
     creates: ~/.vmcloak/image/{{ machines[item].label }}.vdi
 
+
+
 - name: Fill vm's with dependencies
   command: "vmcloak install {{ machines[item].label }} {{ machines[item].VMCloack.dependencies }}"
-  become: cuckoo
+  become_user: cuckoo
+  become: true
   with_items: "{{machines}}"
   when: machines[item].VMCloack is defined
 
 - name: install M$ OFFIC€
   shell: >
     vmcloak install {{ machines[item].label }} office office.isopath={{iso_store}}{{ machines[item].VMCloack.office.iso_file }} office.serialkey={{ machines[item].VMCloack.office.serial_key }}
-  become: cuckoo
+  become_user: cuckoo
+  become: true
   with_items: "{{machines}}"
   when: machines[item].VMCloack.office is defined
