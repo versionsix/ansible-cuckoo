@@ -1,1 +1,56 @@
 ---
+
+- name: Creating sandboxes.
+  debug: msg='WARNING! This will take a long time (about 30min per VM)'
+
+- name: Download & mound iso's
+  include: iso.yml
+
+- name: Generate windows VMs
+  include: winvm_create.yml
+
+# - name: Snapshot windows VM's
+#   include: winvm_snapshot.yml
+
+
+
+
+# ----------------------------------
+#
+# - name: Create iso directory
+#   file: path="{{iso_store}}" state=directory
+#
+# - name: Download vm iso's
+#   get_url:
+#     url: "{{ machines[item].VMCloack.iso_url }}"
+#     dest: "{{iso_store}}{{ machines[item].VMCloack.iso_file }}"
+#     mode: 0644
+#   with_items: "{{machines}}"
+#   when: machines[item].VMCloack is defined
+#
+# - name: Download vm iso's
+#   get_url:
+#     url: "{{ machines[item].VMCloack.iso_url }}"
+#     dest: "{{iso_store}}{{ machines[item].VMCloack.iso_file }}"
+#     mode: 0644
+#   with_items: "{{machines}}"
+#   when: machines[item].VMCloack is defined
+#
+# - name: Mount vm iso's
+#   with_items: "{{machines}}"
+#   when: machines[item].VMCloack is defined
+#
+# - name: Generate VM templates
+#   with_items: "{{machines}}"
+#   when: machines[item].VMCloack is defined
+#
+# - name: Fill vm's with dependencies
+#   with_items: "{{machines}}"
+#   when: machines[item].VMCloack is defined
+#
+# - name: install M$ OFFIC€
+#
+# # Give option to skip if if user wants to apply some configs himself
+# - name: Snapshot all VM's again
+#   with_items: "{{machines}}"
+#   when: machines[item].VMCloack is defined

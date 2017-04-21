@@ -1,0 +1,44 @@
+---
+
+# killvbox & removevms
+
+# make sure first to setup vboxnet0 to prevent errors. It's not persistent between reboots.
+- name: Setup vboxnet0
+  command: vmcloak-vboxnet0
+  become: true
+
+# TODO: Fix resolution
+- name: Generate VM templates
+  command: >
+    vmcloak init
+    --{{ machines[item].VMCloack.windows_version }}
+     --iso-mount {{ machines[item].VMCloack.iso_mount }}
+     --serial-key {{ machines[item].VMCloack.serial_key }}
+     --ip {{ machines[item].ip }}
+     --port {{ machines[item].resultserver_port }}
+     --adapter {{ machines[item].VMCloack.hostonly_adapter }}
+     --netmask {{ machines[item].netmask }}
+     --gateway {{ machines[item].VMCloack.gateway }}
+     --dns {{ machines[item].VMCloack.dns }}
+     --cpus {{ machines[item].VMCloack.cpus }}
+     --ramsize {{ machines[item].VMCloack.ramsize }}
+    {{ machines[item].label }}
+  with_items: "{{machines}}"
+  when: machines[item].VMCloack is defined
+  become_user: cuckoo
+  become: true
+  args:
+    creates: ~/.vmcloak/image/{{ machines[item].label }}.vdi
+
+- name: Fill vm's with dependencies
+  command: "vmcloak install {{ machines[item].label }} {{ machines[item].VMCloack.dependencies }}"
+  become: cuckoo
+  with_items: "{{machines}}"
+  when: machines[item].VMCloack is defined
+
+- name: install M$ OFFIC€
+  shell: >
+    vmcloak install {{ machines[item].label }} office office.isopath={{iso_store}}{{ machines[item].VMCloack.office.iso_file }} office.serialkey={{ machines[item].VMCloack.office.serial_key }}
+  become: cuckoo
+  with_items: "{{machines}}"
+  when: machines[item].VMCloack.office is defined

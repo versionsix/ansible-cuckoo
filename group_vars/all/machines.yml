@@ -1,12 +1,12 @@
 ---
 machines:
 
-  WinXP3_32bit_1:
+  Win7-32bit-1:
     # specify if the machine is a guest vm or not
     guest: yes
     # Specify the label name of the current machine as specified in your
     # VirtualBox configuration.
-    label: Win7_32bit_1
+    label: Win7-32bit-1
     # Specify the operating system platform used by current machine
     # [windows/darwin/linux].
     platform: windows
@@ -15,6 +15,7 @@ machines:
     # IP address is valid and that the host machine is able to reach it. If not,
     # the analysis will fail.
     ip: 192.168.56.110
+    netmask: 255.255.255.0
 
     # (Optional) Specify the snapshot name to use. If you do not specify a snapshot
     # name, the VirtualBox MachineManager will use the current snapshot.
@@ -53,13 +54,34 @@ machines:
 
     # VMCloack specifications
     VMCloack:
-      serial_key: FJ82H-XT6CR-J8D7P-XQJJ2-GPDD4 # Universal key
+      serial_key: FJ82H-XT6CR-J8D7P-XQJJ2-GPDD4 # Windows Serial Key.
       hostonly_adapter: vboxnet0
       vrde: true
       ramsize: 2024
-      iso_url: https://mdl-tb.ct8.pl/getDirect.php?fileName=Win7_Pro_SP1_Dutch_x32.iso
+      iso_url: https://mdl-tb.ct8.pl/getDirect.php?fileName=Win7_Pro_SP1_English_x32.iso
+      iso_file: win7x86.iso
       iso_mount: /mnt/win7x86
-      dependencies: wic pil python27 winstaller31
+        # winxp             This is a Windows XP instance.
+        # win7x86           This is a Windows 7 32-bit instance.
+        # win7x64           This is a Windows 7 64-bit instance.
+        # win81x86          This is a Windows 8.1 32-bit instance.
+        # win81x64          This is a Windows 8.1 64-bit instance.
+        # win10x86          This is a Windows 10 32-bit instance.
+        # win10x64          This is a Windows 10 64-bit instance.
+      windows_version: win7x86
+      gateway: 192.168.56.1
+      dns: 192.168.56.1
+      resolution: 1024X768
+      cpus: 2
+      dependencies: wic pillow python27 winstaller31
+      keyboard-layout: # see: http://vmcloak.readthedocs.io/en/latest/kblayout.html#data-keyboard-layout
+      office:
+        exe_url: https://mdl-tb.ct8.pl/getDirect.php?fileName=Office_Pro_2010_Dutch_x32.exe
+        exe_file: setup.exe
+        exe_folder: office2010_Dutch/
+        iso_file: office2010.iso
+        serial_key: VYBBJ-TRJPB-QFQRF-QFT4D-H3GVB
+        activate: false
 
   # WinXP3_32bit_1:
   #   # specify if the machine is a guest vm or not
