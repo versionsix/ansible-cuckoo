@@ -75,13 +75,17 @@ machines:
       cpus: 2
       dependencies: wic pillow python27 winstaller31
       keyboard-layout: # see: http://vmcloak.readthedocs.io/en/latest/kblayout.html#data-keyboard-layout
-      office:
-        exe_url: https://mdl-tb.ct8.pl/getDirect.php?fileName=Office_Pro_2010_Dutch_x32.exe
-        exe_file: setup.exe
-        exe_folder: office2010_Dutch/
-        iso_file: office2010.iso
-        serial_key: VYBBJ-TRJPB-QFQRF-QFT4D-H3GVB
-        activate: false
+      # office:
+      #     # Office 2010 Professional SP1 x86 + x64 - ISO - Dutch
+      #     # => https://msdn.microsoft.com/en-us/subscriptions/hh442898.aspx#FileId=47778
+      #     #English: X17-81917.iso
+      #     # Dutch: X17-81916.iso
+      #   iso_url: https://mdl-tb.ct8.pl/getDirect.php?fileName=Office_Pro_2010_Dutch_x32.exe
+      #   exe_file: office2010.exe
+      #   exe_folder: office2010_Dutch/
+      #   iso_file: office2010.iso
+      #   serial_key: VYBBJ-TRJPB-QFQRF-QFT4D-H3GVB
+      #   activate: false
 
   # WinXP3_32bit_1:
   #   # specify if the machine is a guest vm or not

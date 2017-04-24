@@ -23,6 +23,7 @@
 
 - shell: yara -v
   register: yara
+  ignore_errors: yes
 
 - name: Download yara git {{yara_git_version}}
   git:

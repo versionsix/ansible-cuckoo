@@ -2,7 +2,7 @@
 - name: Create iso directory
   file: path="{{iso_store}}" state=directory
 
-- name: Download vm iso's
+- name: Download vm iso's from microsoft
   get_url:
     url: "{{ machines[item].VMCloack.iso_url }}"
     dest: "{{iso_store}}{{ machines[item].VMCloack.iso_file }}"
@@ -23,23 +23,28 @@
   become: true
   when: machines[item].VMCloack is defined
 
-- name: Create office iso directory
-  file: path="{{iso_store}}/{{machines[item].VMCloack.office.exe_folder}}" state=directory
-  with_items: "{{machines}}"
-  when: machines[item].VMCloack.office is defined
+# - name: Create office iso directory
+#   file: path="{{iso_store}}/{{machines[item].VMCloack.office.exe_folder}}" state=directory
+#   with_items: "{{machines}}"
+#   when: machines[item].VMCloack.office is defined
+#
+# - name: Download office2010 iso's from microsoft
+#   get_url:
+#     url: "{{ machines[item].VMCloack.office.exe_url }}"
+#     dest: "{{iso_store}}{{machines[item].VMCloack.office.exe_folder}}{{ machines[item].VMCloack.office.exe_file }}"
+#     mode: 0644
+#   args:
+#     creates: ADD HERE
+#   with_items: "{{machines}}"
+#   when: machines[item].VMCloack.office is defined
+#
+# - name: Download office2010 iso's from backup storage if microsoft source fails
 
-- name: Download office exe's
-  get_url:
-    url: "{{ machines[item].VMCloack.office.exe_url }}"
-    dest: "{{iso_store}}{{machines[item].VMCloack.office.exe_folder}}{{ machines[item].VMCloack.office.exe_file }}"
-    mode: 0644
-  with_items: "{{machines}}"
-  when: machines[item].VMCloack.office is defined
-
-- name: Make office iso's
-  command: mkisofs -o {{iso_store}}{{machines[item].VMCloack.office.iso_file}} {{iso_store}}{{machines[item].VMCloack.office.exe_folder}}
-  args:
-    creates: "{{iso_store}}{{machines[item].VMCloack.office.iso_file}}"
-  become: true
-  with_items: "{{machines}}"
-  when: machines[item].VMCloack.office is defined
+#
+# - name: Make office iso's
+#   command: mkisofs -o {{iso_store}}{{machines[item].VMCloack.office.iso_file}} {{iso_store}}{{machines[item].VMCloack.office.exe_folder}}
+#   args:
+#     creates: "{{iso_store}}{{machines[item].VMCloack.office.iso_file}}"
+#   become: true
+#   with_items: "{{machines}}"
+#   when: machines[item].VMCloack.office is defined

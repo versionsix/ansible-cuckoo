@@ -40,10 +40,10 @@
   with_items: "{{machines}}"
   when: machines[item].VMCloack is defined
 
-- name: install M$ OFFIC€
-  shell: >
-    vmcloak install {{ machines[item].label }} office office.isopath={{iso_store}}{{ machines[item].VMCloack.office.iso_file }} office.serialkey={{ machines[item].VMCloack.office.serial_key }}
-  become_user: cuckoo
-  become: true
-  with_items: "{{machines}}"
-  when: machines[item].VMCloack.office is defined
+# - name: install M$ OFFIC€
+#   shell: >
+#     vmcloak install {{ machines[item].label }} office office.isopath={{iso_store}}{{ machines[item].VMCloack.office.iso_file }} office.serialkey={{ machines[item].VMCloack.office.serial_key }}
+#   become_user: cuckoo
+#   become: true
+#   with_items: "{{machines}}"
+#   when: machines[item].VMCloack.office is defined
