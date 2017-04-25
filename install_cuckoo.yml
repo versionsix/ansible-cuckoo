@@ -6,6 +6,7 @@
 
   roles:
     - virtualbox
+    - geerlingguy.elasticsearch
     - cuckoo
     - cuckoo_conf
     # - inetsim

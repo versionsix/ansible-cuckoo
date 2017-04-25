@@ -110,6 +110,3 @@
     creates: /home/cuckoo/.cuckoo/
   become_user: cuckoo
   become_method: sudo
-
-- name: install elasticsearch
-  debug: msg="foo"
