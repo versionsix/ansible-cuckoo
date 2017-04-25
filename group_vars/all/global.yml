@@ -5,3 +5,6 @@ data_dir: /home/cuckoo/vm-data/
 iso_store: /opt/iso/
 # Dir to put generated (non-virtualenv) config files
 cuckoo_dir: /home/cuckoo/.cuckoo
+
+virtualbox_version: "5.1"
+virtualbox_subnet: "192.168.56." # virtualbox subnet prefix default is /24 netmask

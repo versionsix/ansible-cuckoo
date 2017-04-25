@@ -50,6 +50,7 @@ apt_requirements:
     - python-setuptools
     - swig
     - postgresql
+    - pcregrep
 
 pip_requirements:
     - pip
@@ -72,6 +73,10 @@ pip_requirements:
     - dpkt
     - yara-python
     - uwsgi
+    - pycrypto
+    - OpenPyxl
+    - ujson
+    - pillow
 
 conf_files:
    - cuckoo.conf

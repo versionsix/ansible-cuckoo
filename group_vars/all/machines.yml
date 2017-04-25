@@ -55,7 +55,7 @@ machines:
     # VMCloack specifications
     VMCloack:
       template_name: Win7-32bit
-      serial_key: FJ82H-XT6CR-J8D7P-XQJJ2-GPDD4 # Windows Serial Key.
+      serial_key: FJ82H-XT6CR-J8D7P-XQJJ2-GPDD4 # Windows volume Serial Key, provide propper key for production
       hostonly_adapter: vboxnet0
       vrde: true
       ramsize: 2024
