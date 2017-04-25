@@ -8,6 +8,22 @@
   command: vmcloak-vboxnet0
   become: true
 
+- name: setup networking
+  shell: >
+    touch ~/foo ;
+    iptables -F ;
+    iptables -t nat -F ;
+    iptables -t nat -A POSTROUTING -o ens33 -s "192.168.56.0/24" -j MASQUERADE ;
+    iptables -P FORWARD DROP ;
+    iptables -A FORWARD -m state --state RELATED,ESTABLISHED -j ACCEPT ;
+    iptables -A FORWARD -s "192.168.56.0/24" -j ACCEPT ;
+    iptables -A FORWARD -s 192.168.56.0/24 -d 192.168.56.0/24 -j ACCEPT ;
+    iptables -A FORWARD -j LOG ;
+    echo 1 > /proc/sys/net/ipv4/ip_forward ;
+  become: true
+  when: ansible_distribution == 'Ubuntu'
+
+
 # TODO: Fix resolution
 - name: Generate VM templates
   command: >
@@ -23,15 +39,13 @@
      --dns {{ machines[item].VMCloack.dns }}
      --cpus {{ machines[item].VMCloack.cpus }}
      --ramsize {{ machines[item].VMCloack.ramsize }}
-    {{ machines[item].label }}
+    {{ machines[item].VMCloack.template_name }}
   with_items: "{{machines}}"
   when: machines[item].VMCloack is defined
   become_user: cuckoo
   become: true
   args:
-    creates: ~/.vmcloak/image/{{ machines[item].label }}.vdi
-
-
+    creates: ~/.vmcloak/image/{{ machines[item].VMCloack.template_name }}.vdi
 
 - name: Fill vm's with dependencies
   command: "vmcloak install {{ machines[item].label }} {{ machines[item].VMCloack.dependencies }}"
@@ -39,11 +53,3 @@
   become: true
   with_items: "{{machines}}"
   when: machines[item].VMCloack is defined
-
-# - name: install M$ OFFIC€
-#   shell: >
-#     vmcloak install {{ machines[item].label }} office office.isopath={{iso_store}}{{ machines[item].VMCloack.office.iso_file }} office.serialkey={{ machines[item].VMCloack.office.serial_key }}
-#   become_user: cuckoo
-#   become: true
-#   with_items: "{{machines}}"
-#   when: machines[item].VMCloack.office is defined

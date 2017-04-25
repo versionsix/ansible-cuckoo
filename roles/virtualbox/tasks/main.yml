@@ -20,8 +20,8 @@
     update_cache: yes
   ignore_errors: yes # can still be running if we just update, ignore error then.
 
-- name: Get virtualbox_version
-  command: bash -l -c "VBoxManage --version | sed -r 's/([0-9])\.([0-9])\.([0-9]{1,2})r([0-9]+).*/\1.\2.\3\/Oracle_VM_VirtualBox_Extension_Pack-\1.\2.\3-\4.vbox-extpack/'"
+# - name: Get virtualbox_version
+- command: bash -l -c "VBoxManage --version | sed -r 's/([0-9])\.([0-9])\.([0-9]{1,2})r([0-9]+).*/\1.\2.\3\/Oracle_VM_VirtualBox_Extension_Pack-\1.\2.\3-\4.vbox-extpack/'"
   register: vbox_extpack
 
 - name: Download Virtualbox extpack

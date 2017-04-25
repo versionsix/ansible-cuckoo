@@ -5,8 +5,6 @@
   become: true
 
   roles:
-    - virtualbox
-    - cuckoo
-    - cuckoo_conf
+    - vmcloak
     # - inetsim
     # - web
