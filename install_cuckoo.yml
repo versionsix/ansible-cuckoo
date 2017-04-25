@@ -9,4 +9,4 @@
     - cuckoo
     - cuckoo_conf
     # - inetsim
-    # - web
+    - web

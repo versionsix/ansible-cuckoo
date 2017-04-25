@@ -71,6 +71,7 @@ pip_requirements:
     - gunicorn
     - dpkt
     - yara-python
+    - uwsgi
 
 conf_files:
    - cuckoo.conf

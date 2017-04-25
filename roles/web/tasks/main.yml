@@ -2,31 +2,59 @@
 
 - name: Add nginx apt key
   apt_key:
-    url='http://nginx.org/keys/nginx_signing.key'
-  
+    url: 'http://nginx.org/keys/nginx_signing.key'
+
 - name: Add nginx apt repo
   apt_repository:
-    repo="deb http://nginx.org/packages/{{ ansible_lsb.id|lower }}/ {{ ansible_lsb.codename }} nginx"
-    update_cache=yes
-  
+    repo: "deb http://nginx.org/packages/{{ ansible_lsb.id|lower }}/ {{ ansible_lsb.codename }} nginx"
+    update_cache: yes
+
 - name: Install Nginx apt package
-  apt: pkg=nginx state=latest
-  
+  apt:
+    pkg: nginx
+    state: latest
+
 - name: Disable default servers
   file:
-    path=/etc/nginx/conf.d/{{ item.path }}
-    state=absent
+    path: /etc/nginx/conf.d/{{ item.path }}
+    state: absent
   with_items:
     - { path: 'default.conf' }
     - { path: 'example_ssl.conf' }
 
-- name: Copy gunincorn configuration file
-  copy: src=gunicorn_start.sh dest=/home/cuckoo/cuckoo-1.2/web/ owner=cuckoo group=cuckoo mode=0755
+- name: Copy nginx configuration file
+  copy: src=cuckoo_web.conf dest=/etc/nginx/sites-available/ owner=www-data group=www-data mode=0755
+  become: true
 
-- name: Copy supervisor configuration
-  copy: src=cuckoo_super.conf dest=/etc/supervisor/conf.d/ owner=root group=root mode=0644
-  notify: restart supervisor 
+- name: Enable nginx config
+  file:
+    src: /etc/nginx/sites-available/cuckoo_web.conf
+    dest: /etc/nginx/conf.d/cuckoo_web.conf
+    owner: www-data
+    group: www-data
+    state: link
+  become: true
+  notify:
+    - start nginx
+    - restart nginx
 
-- name: Copy the Nginx configuration file
-  copy: src=cuckoo_web.conf dest=/etc/nginx/conf.d/ owner=root group=root mode=0644
-  notify: restart nginx
+- name: Copy uwsgi configuration file
+  copy: src=cuckoo-web.ini dest=~/ owner=cuckoo group=cuckoo mode=0755
+  become_user: cuckoo
+  become: true
+
+- user:
+    name: www-data
+    groups: cuckoo
+
+- name: Create uwsgi log directory
+  file: path="/home/cuckoo/log/uwsgi/" state=directory
+  become: true
+
+- name: Copy supervisord configuration file
+  copy: src=supervisord-cuckoo-web.conf dest=/etc/supervisor/conf.d/ owner=root group=cuckoo mode=0755
+  become: true
+
+# - supervisorctl:
+#     name: cuckoo-web
+#     state: started

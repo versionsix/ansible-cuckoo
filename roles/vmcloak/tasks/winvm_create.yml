@@ -10,7 +10,6 @@
 
 - name: setup networking
   shell: >
-    touch ~/foo ;
     iptables -F ;
     iptables -t nat -F ;
     iptables -t nat -A POSTROUTING -o ens33 -s "192.168.56.0/24" -j MASQUERADE ;
@@ -48,7 +47,7 @@
     creates: ~/.vmcloak/image/{{ machines[item].VMCloack.template_name }}.vdi
 
 - name: Fill vm's with dependencies
-  command: "vmcloak install {{ machines[item].label }} {{ machines[item].VMCloack.dependencies }}"
+  command: "vmcloak install {{ machines[item].VMCloack.template_name }} {{ machines[item].VMCloack.dependencies }}"
   become_user: cuckoo
   become: true
   with_items: "{{machines}}"

@@ -71,11 +71,10 @@ machines:
         # win10x64          This is a Windows 10 64-bit instance.
       windows_version: win7x86
       gateway: 192.168.56.1
-      dns: 192.168.56.1
+      dns: 8.8.8.8
       resolution: 1024X768
-      cpus: 2
-      dependencies: wic pillow python27 winstaller31
-      keyboard-layout: # see: http://vmcloak.readthedocs.io/en/latest/kblayout.html#data-keyboard-layout
+      cpus: 4
+      dependencies: pillow dotnet40 java7 firefox_41 chrome
 
   # WinXP3_32bit_1:
   #   # specify if the machine is a guest vm or not

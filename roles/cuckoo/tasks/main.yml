@@ -16,7 +16,7 @@
   become: true
 
 - name: tcpdump apparmor disable on Ubuntu
-  command: sudo aa-disable /usr/sbin/tcpdump
+  command: aa-disable /usr/sbin/tcpdump
   ignore_errors: yes
   when: ansible_distribution == 'Ubuntu'
   become: true
@@ -110,3 +110,6 @@
     creates: /home/cuckoo/.cuckoo/
   become_user: cuckoo
   become_method: sudo
+
+- name: install elasticsearch
+  debug: msg="foo"
