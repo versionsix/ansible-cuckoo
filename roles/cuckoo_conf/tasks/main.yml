@@ -29,6 +29,12 @@
     dest: "{{ cuckoo_dir }}/conf/virtualbox.conf"
     backup: yes
 
+- name: Copy routing.conf config file
+  template:
+    src: templates/routing.conf.j2
+    dest: "{{ cuckoo_dir }}/conf/routing.conf"
+    backup: yes
+
 - name: Generate VMCloack configs (Not necessary for most recent version, but...)
   template:
     src: templates/machine.conf.j2

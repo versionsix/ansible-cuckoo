@@ -51,6 +51,7 @@ apt_requirements:
     - swig
     - postgresql
     - pcregrep
+    - vagrant
 
 pip_requirements:
     - pip
@@ -83,4 +84,3 @@ conf_files:
    - memory.conf
    - virtualbox.conf
    - reporting.conf
-   - winxp3.conf

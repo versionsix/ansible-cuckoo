@@ -1,0 +1,42 @@
+---
+- name: Make inetsim directory
+  file: path="~/inetsim" state=directory
+  become_user: cuckoo
+
+- name: copy Vagrantfile
+  copy:
+    src: Vagrantfile
+    dest: /home/cuckoo/inetsim/
+    owner: cuckoo
+    group: cuckoo
+    mode: 0755
+
+- name: run Vagrantfile
+  command: vagrant up
+  args:
+    chdir: /home/cuckoo/inetsim
+    creates: /home/cuckoo/inetsim/ubuntu-xenial-16.04-cloudimg-console.log
+  become_user: cuckoo
+
+# https://askubuntu.com/questions/57220/start-vboxheadless-vm-at-startup
+
+- name: remove windows line-endings
+  local_action: replace dest={{playbook_dir}}/roles/inetsim/files/StartVM regexp="\r"
+
+
+- name: copy StartVM
+  copy:
+    src: StartVM
+    dest: /etc/init.d/
+    owner: root
+    group: root
+    mode: 0755
+  become: true
+
+- name: Give +x permissions
+  file: dest=/etc/init.d/StartVM mode=a+x
+  become: true
+
+- name: Update startup script
+  command: update-rc.d StartVM defaults 99 01
+  become: true

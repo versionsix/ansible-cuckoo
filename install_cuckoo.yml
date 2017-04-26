@@ -8,6 +8,6 @@
     - virtualbox
     - geerlingguy.elasticsearch
     - cuckoo
+    - inetsim
     - cuckoo_conf
-    # - inetsim
     - web

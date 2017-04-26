@@ -1,6 +1,17 @@
 ---
+
+- name: Configure the Vagarant APT key
+  apt_key:
+    keyserver: pgp.mit.edu
+    id: AD319E0F7CFFA38B4D9F6E55CE3F3DE92099F7A4
+
+- name: Configure the Vagrant Debian or Ubuntu APT repositories
+  apt_repository: repo="deb http://vagrant-deb.linestarve.com/ any main" state=present
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+
 - name: Install requirements from apt
-  apt: pkg={{ item }} state=latest
+  apt: pkg={{ item }} state=latest update_cache=yes
   with_items: "{{apt_requirements}}"
   become: true
 

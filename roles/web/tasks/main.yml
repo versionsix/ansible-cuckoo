@@ -52,8 +52,10 @@
   become: true
 
 - name: Copy supervisord configuration file
-  copy: src=supervisord-cuckoo-web.conf dest=/etc/supervisor/conf.d/ owner=root group=cuckoo mode=0755
+  copy: src=supervisord-cuckoo-web.conf dest=/etc/supervisor/conf.d/ owner=root group=root mode=0755
   become: true
+  notify:
+    - restart supervisord
 
 # - supervisorctl:
 #     name: cuckoo-web
