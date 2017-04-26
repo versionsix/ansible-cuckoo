@@ -6,3 +6,9 @@
   become: true
   with_items: "{{machines}}"
   when: machines[item].VMCloack is defined
+
+- name: Reset iptables
+  shell: >
+    iptables -F
+  become: true
+  when: ansible_distribution == 'Ubuntu'

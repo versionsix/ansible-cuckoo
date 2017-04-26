@@ -10,6 +10,14 @@
   with_items: "{{machines}}"
   when: machines[item].VMCloack is defined
 
+- name: Download vm iso's from backup source # If ms url worked, won't try backup
+  get_url:
+    url: "{{ machines[item].VMCloack.iso_url_backup }}"
+    dest: "{{iso_store}}{{ machines[item].VMCloack.iso_file }}"
+    mode: 0644
+  with_items: "{{machines}}"
+  when: machines[item].VMCloack is defined
+
 - name: Create iso mountpoints
   file: path="{{ machines[item].VMCloack.iso_mount}}" state=directory
   with_items: "{{machines}}"

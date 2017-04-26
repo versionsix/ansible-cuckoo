@@ -60,6 +60,7 @@ machines:
       vrde: true
       ramsize: 2024
       iso_url: https://mdl-tb.ct8.pl/getDirect.php?fileName=Win7_Pro_SP1_English_x32.iso
+      iso_url_backup: https://mdl-tb.ct8.pl/getDirect.php?fileName=Win7_Pro_SP1_English_x32.iso
       iso_file: win7x86.iso
       iso_mount: /mnt/win7x86
         # winxp             This is a Windows XP instance.

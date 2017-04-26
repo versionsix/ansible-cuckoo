@@ -1,0 +1,21 @@
+---
+- name: start nginx
+  service: name=nginx state=started
+
+- name: restart nginx
+  service: name=nginx state=restarted
+
+- name: reload nginx
+  service: name=nginx state=reloaded
+
+# - name: start uwsgi app
+#   supervisorctl: name=supervisord-cuckoo-web state=started config=/etc/supervisor/supervisord.conf
+#   become: yes
+
+- name: start supervisord
+  service: name=supervisor state=started
+  become: yes
+
+- name: restart supervisord
+  service: name=supervisor state=restarted
+  become: yes

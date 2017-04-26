@@ -1,6 +1,6 @@
 ---
 
-- name: Configure the Vagarant APT key
+- name: Configure the Vagrant APT key
   apt_key:
     keyserver: pgp.mit.edu
     id: AD319E0F7CFFA38B4D9F6E55CE3F3DE92099F7A4
@@ -118,6 +118,28 @@
      cuckoo community
   args:
     chdir: /home/cuckoo/
-    creates: /home/cuckoo/.cuckoo/
+    creates: /home/cuckoo/.cuckoo/signatures/compat.py
   become_user: cuckoo
   become_method: sudo
+
+- name: Create rooter log directory
+  file: path="/home/cuckoo/log/rooter/" state=directory
+  become: true
+
+- name: Copy supervisord cuckoo rooter configuration file
+  copy: src=supervisord-cuckoo-rooter.conf dest=/etc/supervisor/conf.d/ owner=root group=root mode=0755
+  become: true
+  notify:
+    - start supervisord
+    - restart supervisord
+
+- name: Create rooter log directory
+  file: path="/home/cuckoo/log/cuckoo_service/" state=directory
+  become: true
+
+- name: Copy supervisord cuckoo rooter configuration file
+  copy: src=supervisord-cuckoo-service.conf dest=/etc/supervisor/conf.d/ owner=root group=root mode=0755
+  become: true
+  notify:
+    - start supervisord
+    - restart supervisord

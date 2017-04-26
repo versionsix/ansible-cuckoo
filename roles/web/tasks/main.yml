@@ -56,7 +56,3 @@
   become: true
   notify:
     - restart supervisord
-
-# - supervisorctl:
-#     name: cuckoo-web
-#     state: started
