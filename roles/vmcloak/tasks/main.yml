@@ -9,5 +9,7 @@
 - name: Generate windows VMs
   include: winvm_create.yml
 
-- name: Snapshot windows VMs
-  include: winvm_snapshot.yml
+# register_cuckoo
+
+# - name: Snapshot windows VMs
+#   include: winvm_snapshot.yml
