@@ -126,20 +126,21 @@
   file: path="/home/cuckoo/log/rooter/" state=directory
   become: true
 
-- name: Copy supervisord cuckoo rooter configuration file
-  copy: src=supervisord-cuckoo-rooter.conf dest=/etc/supervisor/conf.d/ owner=root group=root mode=0755
-  become: true
-  notify:
-    - start supervisord
-    - restart supervisord
+# Debug supervisord
+# - name: Copy supervisord cuckoo rooter configuration file
+#   copy: src=supervisord-cuckoo-rooter.conf dest=/etc/supervisor/conf.d/ owner=root group=root mode=0755
+#   become: true
+#   notify:
+#     - start supervisord
+#     - restart supervisord
 
 - name: Create rooter log directory
   file: path="/home/cuckoo/log/cuckoo_service/" state=directory
   become: true
-
-- name: Copy supervisord cuckoo rooter configuration file
-  copy: src=supervisord-cuckoo-service.conf dest=/etc/supervisor/conf.d/ owner=root group=root mode=0755
-  become: true
-  notify:
-    - start supervisord
-    - restart supervisord
+# Debug supervisord
+# - name: Copy supervisord cuckoo rooter configuration file
+#   copy: src=supervisord-cuckoo-service.conf dest=/etc/supervisor/conf.d/ owner=root group=root mode=0755
+#   become: true
+#   notify:
+#     - start supervisord
+#     - restart supervisord

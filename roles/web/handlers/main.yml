@@ -8,10 +8,6 @@
 - name: reload nginx
   service: name=nginx state=reloaded
 
-# - name: start uwsgi app
-#   supervisorctl: name=supervisord-cuckoo-web state=started config=/etc/supervisor/supervisord.conf
-#   become: yes
-
 - name: start supervisord
   service: name=supervisor state=started
   become: yes

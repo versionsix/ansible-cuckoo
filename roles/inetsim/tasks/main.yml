@@ -23,19 +23,18 @@
 - name: remove windows line-endings
   local_action: replace dest={{playbook_dir}}/roles/inetsim/files/StartVM regexp="\r"
 
-
 - name: copy StartVM
   copy:
     src: StartVM
     dest: /etc/init.d/
     owner: root
     group: root
-    mode: 0755
+    mode: a+x
   become: true
 
-- name: Give +x permissions
-  file: dest=/etc/init.d/StartVM mode=a+x
-  become: true
+# - name: Give +x permissions
+#   file: dest=/etc/init.d/StartVM mode=a+x
+#   become: true
 
 - name: Update startup script
   command: update-rc.d StartVM defaults 99 01
