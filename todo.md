@@ -1,10 +1,10 @@
 Todo
 ====
-- VirtualBox vboxnet0 on boot
+# - VirtualBox vboxnet0 on boot
 - VirtualBox subnet
 - check volatility
 - update volatility signatures
-- add vagrant to apt
+# - add vagrant to apt
 - inetsim ? vagrant ?
     + Vagrant box name
     + Private persistent?

@@ -1,0 +1,44 @@
+#!/bin/sh
+#/etc/init.d/StartVM
+### BEGIN INIT INFO
+# Provides:          StartVM
+# Required-Start:    $network $remote_fs $named
+# Required-Stop:     $network $remote_fs $named
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Description:       Start virtualBox machines and vboxnet0
+### END INIT INFO
+
+#Edit these variables!
+VMUSER=cuckoo
+VMNAME="inetsim"
+IPADDR="{{virtualbox_subnet}}.1"
+NETMASK="255.255.255.0"
+
+start() {
+  echo "Starting VirtualBox VM..."
+  # sudo /usr/bin/VBoxManage hostonlyif create vboxnet0
+  sudo -H -b -u $VMUSER /usr/bin/VBoxManage list vms > /dev/null 2>&1
+  sudo /usr/bin/VBoxManage hostonlyif ipconfig vboxnet0 --ip "$IPADDR" --netmask "$NETMASK" > /dev/null 2>&1
+  sudo -H -b -u $VMUSER /usr/bin/VBoxHeadless -s "$VMNAME" > /dev/null 2>&1
+}
+
+stop() {
+  echo "Saving state of Virtualbox VM..."
+  sudo -H -u  $VMUSER /usr/bin/VBoxManage controlvm "$VMNAME" savestate
+}
+
+case "$1" in
+  start)
+    start
+    ;;
+  stop)
+    stop
+    ;;
+  restart)
+    stop
+    start
+    ;;
+  *)
+    echo "Usage: $0 {start|stop|restart}"
+esac

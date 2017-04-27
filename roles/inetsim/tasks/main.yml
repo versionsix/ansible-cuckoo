@@ -4,9 +4,9 @@
   become_user: cuckoo
 
 - name: copy Vagrantfile
-  copy:
-    src: Vagrantfile
-    dest: /home/cuckoo/inetsim/
+  template:
+    src: Vagrantfile.j2
+    dest: /home/cuckoo/inetsim/Vagrantfile
     owner: cuckoo
     group: cuckoo
     mode: 0755
@@ -21,16 +21,24 @@
 # https://askubuntu.com/questions/57220/start-vboxheadless-vm-at-startup
 
 - name: remove windows line-endings
-  local_action: replace dest={{playbook_dir}}/roles/inetsim/files/StartVM regexp="\r"
+  local_action: replace dest={{playbook_dir}}/roles/inetsim/templates/StartVM.j2 regexp="\r"
 
 - name: copy StartVM
-  copy:
-    src: StartVM
-    dest: /etc/init.d/
-    owner: root
-    group: root
+  template:
+    src: StartVM.j2
+    dest: /etc/init.d/StartVM
+    # newline_sequence: '\n'
     mode: a+x
   become: true
+
+# - name: copy StartVM
+#   copy:
+#     src: StartVM
+#     dest: /etc/init.d/
+#     owner: root
+#     group: root
+#     mode: a+x
+#   become: true
 
 # - name: Give +x permissions
 #   file: dest=/etc/init.d/StartVM mode=a+x

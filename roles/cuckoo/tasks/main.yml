@@ -1,5 +1,4 @@
 ---
-
 - name: Configure the Vagrant APT key
   apt_key:
     keyserver: pgp.mit.edu
@@ -21,6 +20,17 @@
     state: latest # pip install --upgrade equivalent
   with_items: "{{pip_requirements}}"
   become: true
+
+- name: Create a new database with name 'cuckoo'
+  mysql_db:
+    name: cuckoo
+    state: present
+
+- mysql_user:
+    name: cuckoo
+    password: cuckoo
+    priv: '*.*:ALL'
+    state: present
 
 - name: give tcpdump root permissions
   command: setcap cap_net_raw,cap_net_admin=eip /usr/sbin/tcpdump
@@ -126,21 +136,17 @@
   file: path="/home/cuckoo/log/rooter/" state=directory
   become: true
 
-# Debug supervisord
-# - name: Copy supervisord cuckoo rooter configuration file
-#   copy: src=supervisord-cuckoo-rooter.conf dest=/etc/supervisor/conf.d/ owner=root group=root mode=0755
-#   become: true
-#   notify:
-#     - start supervisord
-#     - restart supervisord
+- name: Copy supervisord cuckoo rooter configuration file
+  copy: src=supervisord-cuckoo-rooter.conf dest=/etc/supervisor/conf.d/ owner=root group=root mode=0755
+  become: true
 
 - name: Create rooter log directory
   file: path="/home/cuckoo/log/cuckoo_service/" state=directory
   become: true
-# Debug supervisord
-# - name: Copy supervisord cuckoo rooter configuration file
-#   copy: src=supervisord-cuckoo-service.conf dest=/etc/supervisor/conf.d/ owner=root group=root mode=0755
-#   become: true
-#   notify:
-#     - start supervisord
-#     - restart supervisord
+
+- name: Copy supervisord cuckoo service configuration file
+  copy: src=supervisord-cuckoo-service.conf dest=/etc/supervisor/conf.d/ owner=root group=root mode=0755
+  become: true
+  notify:
+    - start supervisord
+    - restart supervisord

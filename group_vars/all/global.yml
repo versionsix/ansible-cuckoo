@@ -7,4 +7,9 @@ iso_store: /opt/iso/
 cuckoo_dir: /home/cuckoo/.cuckoo
 
 virtualbox_version: "5.1"
-virtualbox_subnet: "192.168.56." # virtualbox subnet prefix default is /24 netmask
+virtualbox_subnet: "192.168.56" # virtualbox subnet prefix default is /24 netmask
+
+cuckoo_install_method: "pip" # install cuckoo using git or pip
+cuckoo_version: "2.0.2"
+yara_git_version: "3.5.0"
+volatility_git_version: "2.6"

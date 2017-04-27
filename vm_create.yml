@@ -1,0 +1,8 @@
+#!/usr/bin/env ansible-playbook
+---
+- name: Install cuckoo
+  hosts: vmware
+  become: true
+
+  roles:
+    - reboot

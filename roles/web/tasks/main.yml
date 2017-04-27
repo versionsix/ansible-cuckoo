@@ -50,9 +50,9 @@
 - name: Create uwsgi log directory
   file: path="/home/cuckoo/log/uwsgi/" state=directory
   become: true
-# Debug supervisord
-# - name: Copy supervisord configuration file
-#   copy: src=supervisord-cuckoo-web.conf dest=/etc/supervisor/conf.d/ owner=root group=root mode=0755
-#   become: true
-#   notify:
-#     - restart supervisord
+
+- name: Copy supervisord configuration file
+  copy: src=supervisord-cuckoo-web.conf dest=/etc/supervisor/conf.d/ owner=root group=root mode=0755
+  become: true
+  notify:
+    - restart supervisord

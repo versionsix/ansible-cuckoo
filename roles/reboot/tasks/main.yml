@@ -1,0 +1,10 @@
+---
+- name: Reboot required
+  shell: >
+    sleep 2 && shutdown -r now "Ansible reboot"
+  async: 1
+  poll: 0
+  ignore_errors: false
+  become: true
+  notify:
+    - waiting for server to come back

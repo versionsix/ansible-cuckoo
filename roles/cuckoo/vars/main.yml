@@ -1,9 +1,4 @@
 ---
-cuckoo_install_method: "pip" # install cuckoo using git or pip
-cuckoo_version: "2.0.1"
-yara_git_version: "3.5.0"
-volatility_git_version: "2.6"
-
 apt_requirements:
     - git
     - curl
@@ -52,6 +47,12 @@ apt_requirements:
     - postgresql
     - pcregrep
     - vagrant
+    - mysql-server
+    - python-mysqldb
+    - htop
+    - nload
+    - links
+    - tree
 
 pip_requirements:
     - pip
@@ -60,7 +61,7 @@ pip_requirements:
     - django-ratelimit
     - dnspython
     - jinja2
-    - sqlalchemy==0.9.9
+    - sqlalchemy==1.0.8
     - pymongo
     - bottle
     - pefile
