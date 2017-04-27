@@ -4,7 +4,7 @@
 # Provides:          StartVM
 # Required-Start:    $network $remote_fs $named
 # Required-Stop:     $network $remote_fs $named
-# Default-Start:     2 3 4 5
+# Default-Start:     3 4 5
 # Default-Stop:      0 1 6
 # Description:       Start virtualBox machines and vboxnet0
 ### END INIT INFO
@@ -17,9 +17,11 @@ NETMASK="255.255.255.0"
 
 start() {
   echo "Starting VirtualBox VM..."
+  sleep 10
   # sudo /usr/bin/VBoxManage hostonlyif create vboxnet0
   sudo -H -b -u $VMUSER /usr/bin/VBoxManage list vms > /dev/null 2>&1
   sudo /usr/bin/VBoxManage hostonlyif ipconfig vboxnet0 --ip "$IPADDR" --netmask "$NETMASK" > /dev/null 2>&1
+  sleep 10
   sudo -H -b -u $VMUSER /usr/bin/VBoxHeadless -s "$VMNAME" > /dev/null 2>&1
 }
 
