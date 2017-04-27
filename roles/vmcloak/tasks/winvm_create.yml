@@ -8,6 +8,7 @@
   command: vmcloak-vboxnet0
   become: true
 
+#Todo
 - name: setup networking
   shell: >
     iptables -F ;

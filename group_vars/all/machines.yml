@@ -75,7 +75,7 @@ machines:
       dns: 8.8.8.8
       resolution: 1024X768
       cpus: 4
-      dependencies: pillow # dotnet40 firefox_41 chrome # java7
+      dependencies: pillow adobe9 wic pillow java7 chrome # dotnet40 firefox_41 chrome # java7
 
   # WinXP3_32bit_1:
   #   # specify if the machine is a guest vm or not
