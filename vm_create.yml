@@ -1,8 +1,0 @@
-#!/usr/bin/env ansible-playbook
----
-- name: Install cuckoo
-  hosts: esxi
-  become: true
-
-  roles:
-    - vmcloak
