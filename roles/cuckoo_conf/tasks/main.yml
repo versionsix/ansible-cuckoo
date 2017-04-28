@@ -35,9 +35,9 @@
     dest: "{{ cuckoo_dir }}/conf/routing.conf"
     backup: yes
 
-- name: Generate VMCloack configs (Not necessary for most recent version, but...)
-  template:
-    src: templates/machine.conf.j2
-    dest: "{{ cuckoo_dir }}/conf/{{ machines[item].label }}.conf"
-    backup: yes
-  with_items: "{{machines}}"
+# - name: Generate VMCloack configs (Not necessary for most recent version, but...)
+#   template:
+#     src: templates/machine.conf.j2
+#     dest: "{{ cuckoo_dir }}/conf/{{ machines[item].label }}.conf"
+#     backup: yes
+#   with_items: "{{machines}}"

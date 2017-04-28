@@ -1,12 +1,12 @@
 ---
 machines:
 
-  Win7-32bit-1:
+  Win7-64bit-1:
     # specify if the machine is a guest vm or not
     guest: yes
     # Specify the label name of the current machine as specified in your
     # VirtualBox configuration.
-    label: Win7-32bit-1
+    label: Win7-64bit-1
     # Specify the operating system platform used by current machine
     # [windows/darwin/linux].
     platform: windows
@@ -54,14 +54,14 @@ machines:
 
     # VMCloack specifications
     VMCloack:
-      template_name: Win7-32bit
+      template_name: Win7-64bit
       serial_key: FJ82H-XT6CR-J8D7P-XQJJ2-GPDD4 # Windows volume Serial Key, provide propper key for production
       hostonly_adapter: vboxnet0
       vrde: true
       ramsize: 2024
-      iso_url: https://mdl-tb.ct8.pl/getDirect.php?fileName=Win7_Pro_SP1_English_x32.iso
-      iso_url_backup: https://mdl-tb.ct8.pl/getDirect.php?fileName=Win7_Pro_SP1_English_x32.iso
-      iso_file: win7x86.iso
+      iso_url: https://mdl-tb.ct8.pl/getDirect.php?fileName=Win7_Pro_SP1_English_x64.iso
+      iso_url_backup: https://mdl-tb.ct8.pl/getDirect.php?fileName=Win7_Pro_SP1_English_x64.iso
+      iso_file: win7x64.iso
       iso_mount: /mnt/win7x86
         # winxp             This is a Windows XP instance.
         # win7x86           This is a Windows 7 32-bit instance.
@@ -70,7 +70,7 @@ machines:
         # win81x64          This is a Windows 8.1 64-bit instance.
         # win10x86          This is a Windows 10 32-bit instance.
         # win10x64          This is a Windows 10 64-bit instance.
-      windows_version: win7x86
+      windows_version: win7x64
       gateway: "{{virtualbox_subnet}}.1"
       dns: 8.8.8.8
       resolution: 1024X768

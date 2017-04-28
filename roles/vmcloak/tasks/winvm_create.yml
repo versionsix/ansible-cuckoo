@@ -47,9 +47,9 @@
   args:
     creates: ~/.vmcloak/image/{{ machines[item].VMCloack.template_name }}.vdi
 
-- name: Fill vm's with dependencies
-  command: "vmcloak install {{ machines[item].VMCloack.template_name }} {{ machines[item].VMCloack.dependencies }}"
-  become_user: cuckoo
-  become: true
-  with_items: "{{machines}}"
-  when: machines[item].VMCloack is defined
+# - name: Fill vm's with dependencies
+#   command: "vmcloak install {{ machines[item].VMCloack.template_name }} {{ machines[item].VMCloack.dependencies }}"
+#   become_user: cuckoo
+#   become: true
+#   with_items: "{{machines}}"
+#   when: machines[item].VMCloack is defined
