@@ -1,21 +1,17 @@
 Todo
 ====
 # - VirtualBox vboxnet0 on boot
-- VirtualBox subnet
+# - VirtualBox subnet
 - check volatility
 - update volatility signatures
 # - add vagrant to apt
-- inetsim ? vagrant ?
-    + Vagrant box name
-    + Private persistent?
-
+- tesseract
+- yara rules
 - rooter:
   tor?
   vpn?
   dirty line?
-- not working after reboot
-- cucloo deamon
-
+- image Python
 Virtual machines:
 - List diffrences, labels
 - Office!

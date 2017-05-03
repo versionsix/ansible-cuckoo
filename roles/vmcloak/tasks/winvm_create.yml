@@ -1,11 +1,12 @@
 ---
 
-# killvbox & removevms
-
 # make sure first to setup vboxnet0 to prevent errors. It's not persistent between reboots.
-# TODO: Iptables
 - name: Setup vboxnet0
   command: vmcloak-vboxnet0
+  become: true
+
+- name: Stop cuckoo service
+  command: supervisorctl stop all
   become: true
 
 #Todo
