@@ -375,7 +375,7 @@ processing:
     # Also extract DLL files from the process memory dump.
     extract_dll: no
     # Delete process memory dumps after analysis to save disk space.
-    dump_delete: no
+    dump_delete: yes
 
   procmon:
     # Enable procmon processing. This only takes place when the "procmon=1" option
