@@ -43,7 +43,7 @@ machines:
     # the port for the Result Server as your machine sees it. If you don't specify a port
     # here, the machine will use the default value from cuckoo.conf.
     # Example:
-    resultserver_port: 2042
+    resultserver_port: 8000
 
     # (Optional) Set your own tags. These are comma separated and help to identify
     # specific VMs. You can run samples on VMs with tag you require.

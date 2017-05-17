@@ -1,0 +1,17 @@
+#! /bin/bash
+
+supervisorctl stop all
+
+cd /tmp
+wget http://rules.emergingthreats.net/open/suricata/emerging.rules.tar.gz -O emerging.rules.tar.gz
+tar zxvf emerging.rules.tar.gz
+cp -r rules /etc/suricata/
+
+#wget https://github.com/Yara-Rules/rules/archive/master.tar.gz -O yara_rules.tar.gz
+#mkdir -p /tmp/yara_rules && tar zxvf yara_rules.tar.gz -C yara_rules --strip-components 1
+#cp -r rules-master/* /home/cuckoo/.cuckoo/yara
+#chown -R cuckoo /home/cuckoo/.cuckoo/yara/*
+
+sudo -H -u cuckoo bash -c 'cuckoo community'
+
+supervisorctl start all

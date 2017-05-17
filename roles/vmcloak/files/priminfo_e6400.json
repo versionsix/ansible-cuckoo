@@ -1,0 +1,39 @@
+{
+    "bios": {
+        "release_date": "03/07/2007", 
+        "version": "2004", 
+        "vendor": "American Megatrends Inc."
+    }, 
+    "chassis": {
+        "serial": "<SERIAL> 8", 
+        "version": "Chassis Version", 
+        "vendor": "Chassis Manufacture", 
+        "asset": "Asset-1234567890", 
+        "chassis_type": 3
+    }, 
+    "harddisk": [
+        {
+            "model": "Cruzer", 
+            "serial": "<SERIAL> 14", 
+            "revision": "8.02"
+        }
+    ], 
+    "board": {
+        "product": "P5W DH Deluxe", 
+        "version": "Rev 1.xx", 
+        "vendor": "ASUSTeK Computer INC.", 
+        "location": "To Be Filled By O.E.M.", 
+        "serial": "<SERIAL> 10", 
+        "board_type": 2, 
+        "asset": "To Be Filled By O.E.M."
+    }, 
+    "system": {
+        "sku": "<BAD INDEX>", 
+        "product": "unlock install", 
+        "version": "System Version", 
+        "vendor": "PRIMINFO", 
+        "uuid": "<UUID>", 
+        "family": "<BAD INDEX>", 
+        "serial": "<SERIAL> 8"
+    }
+}

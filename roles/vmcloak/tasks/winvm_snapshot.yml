@@ -1,20 +1,7 @@
 ---
-
-# Todo: setup snapshot to use correct ipconfiguration
-        # args = [
-        #     "cuckoo",
-        #     "--cwd", cuckoo_dirpath,
-        #     "machine",
-        #     "--add", vmname, hostonly_ip,
-        #     "--platform", "windows",
-        #     "--tags", tags or "",
-        #     "--snapshot", "vmcloak",
-        #     "--options", "",
-        # ]
-
 # Here we take a snapshot of the vm and publish it to cuckoo
 - name: Take snapshot of vm to prepare for cuckoo
-  command: "vmcloak snapshot {{ machines[item].VMCloack.template_name }} {{ machines[item].label }}"
+  command: "vmcloak snapshot {{ machines[item].VMCloack.template_name }} {{ machines[item].label }} {{ machines[item].ip }}"
   become_user: cuckoo
   become: true
   with_items: "{{machines}}"
@@ -25,3 +12,7 @@
     iptables -F
   become: true
   when: ansible_distribution == 'Ubuntu'
+
+- name: Start cuckoo service
+  command: supervisorctl start all
+  become: true

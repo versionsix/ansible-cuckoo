@@ -1,15 +1,29 @@
 ---
 
+- name: Copy supervisord cuckoo rooter configuration file
+  copy: src=priminfo_e6400.json dest=/home/frank/.vmcloak/hwconf/ owner=cuckoo group=root mode=0755
+  become: true
+
 - name: Creating sandboxes.
   debug: msg='WARNING! This will take a long time (about 30min per VM)'
 
+# make sure first to setup vboxnet0 to prevent errors. It's not persistent between reboots.
+- name: Setup vboxnet0
+  command: vmcloak-vboxnet0
+  become: true
+
+- name: Stop cuckoo service
+  command: supervisorctl stop all
+  become: true
+
 - name: Download & mound iso's
   include: iso.yml
+  when: vmcloak == "init"
 
 - name: Generate windows VMs
   include: winvm_create.yml
+  when: vmcloak == "init"
 
-# register_cuckoo
-
-# - name: Snapshot windows VMs
-#   include: winvm_snapshot.yml
+- name: Snapshot windows VMs
+  include: winvm_snapshot.yml
+  when: vmcloak == "snapshot"

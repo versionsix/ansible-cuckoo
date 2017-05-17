@@ -53,6 +53,14 @@ apt_requirements:
     - nload
     - links
     - tree
+    - tesseract-ocr-fra
+    - tesseract-ocr-frm
+    - tesseract-ocr-eng
+    - tesseract-ocr-deu
+    - tesseract-ocr-rus
+    - tesseract-ocr-nld
+    - tesseract-ocr
+    - suricata
 
 pip_requirements:
     - pip

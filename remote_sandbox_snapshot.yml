@@ -4,6 +4,6 @@
   hosts: esxi
   become: true
   vars:
-    vmcloak: "init"
+    vmcloak: "snapshot"
   roles:
     - vmcloak

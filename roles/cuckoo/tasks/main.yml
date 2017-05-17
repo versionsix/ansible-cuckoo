@@ -90,7 +90,7 @@
     name: cuckoo
     groups: cuckoo,vboxusers,sudo
     shell: /bin/bash
-    password: $6$igzTj8a5LV0$OP9/fAIXmVr2/qPjDJLZ5DYx0F7maMZ7QT99ee2KbkfqAWNC3uVCrGohDpk5cUmfnm8t4qIOuhnlw6FuKP4sL0 # = cuckoo | generate pw using mkpasswd --method=sha-512
+    password: $6$vt76gQ9hf$RJo2Qp3iGKBdcV5wfjTwpDSCVmZMxZQvfEmhEUpyJNXHtTvYRSVy8Mdu7G9G/X0g/FhwC3KiMld/dvj/GnRft/ # = cuckoo_kRAYe93n | generate pw using mkpasswd --method=sha-512
   become: true
 
 - name: Sudo group with no passwd
@@ -133,7 +133,7 @@
   become_method: sudo
 
 - name: Create rooter log directory
-  file: path="/home/cuckoo/log/rooter/" state=directory
+  file: path="/var/log/cuckoo/" state=directory
   become: true
 
 - name: Copy supervisord cuckoo rooter configuration file
@@ -141,7 +141,7 @@
   become: true
 
 - name: Create rooter log directory
-  file: path="/home/cuckoo/log/cuckoo_service/" state=directory
+  file: path="/var/log/cuckoo/" state=directory
   become: true
 
 - name: Copy supervisord cuckoo service configuration file
@@ -150,3 +150,16 @@
   notify:
     - start supervisord
     - restart supervisord
+
+- name: remove windows line-endings
+  local_action: replace dest={{playbook_dir}}/roles/cuckoo/files/cuckoo-update regexp="\r"
+
+- name: Copy cuckoo-update file
+  copy: src=cuckoo-update dest=/usr/bin/ owner=root group=root mode=a+x
+  become: true
+
+- cron:
+    name: "Update cuckoo signatures"
+    minute: "0"
+    hour: "2"
+    job: "/usr/bin/cuckoo-update"

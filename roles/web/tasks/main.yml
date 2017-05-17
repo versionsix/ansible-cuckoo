@@ -48,7 +48,7 @@
     groups: cuckoo
 
 - name: Create uwsgi log directory
-  file: path="/home/cuckoo/log/uwsgi/" state=directory
+  file: path="/var/log/cuckoo/" state=directory
   become: true
 
 - name: Copy supervisord configuration file
